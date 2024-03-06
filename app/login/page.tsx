@@ -22,7 +22,7 @@ export default function Login({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/login?message=ログインできませんでした");
     }
 
     return redirect("/protected");
@@ -45,10 +45,10 @@ export default function Login({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/login?message=登録できませんでした。");
     }
 
-    return redirect("/login?message=Check email to continue sign in process");
+    return redirect("/login?message=メールを確認してください。");
   };
 
   return (

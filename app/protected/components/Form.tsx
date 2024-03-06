@@ -26,15 +26,12 @@ const Form : React.FC<Props> = async ({email}) => {
           //return redirect("/login?message=Could not authenticate user");
         //}
     
-       // return redirect("/protected");
+       return redirect("/list");
       };
 
 
   return (
     <div>
-    <div>
-      {email}
-    </div>
     <div>
         <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
     <label className="text-md" htmlFor="email">
@@ -51,7 +48,7 @@ const Form : React.FC<Props> = async ({email}) => {
           className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
           pendingText="Signing In..."
         >
-          Sign In
+          登録
         </SubmitButton>
     </form>
     </div>
