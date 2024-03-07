@@ -17,7 +17,7 @@ import {
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
+export type Sales = {
   id: string
   created_at: string
     client: string
@@ -29,7 +29,7 @@ export type Payment = {
     org: string
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Sales>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -82,20 +82,6 @@ export const columns: ColumnDef<Payment>[] = [
         accessorKey: "status",
         header: "結果",
       },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-  },
   {
     id: "actions",
     cell: ({ row }) => {

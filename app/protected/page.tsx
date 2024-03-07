@@ -15,14 +15,13 @@ export default async function ProtectedPage() {
     return redirect("/login");
   }
 
+
+
   const {data} : any = await supabase.from('org').select('*').eq('email', user?.email)
 
   if(data.length > 0){
-    return redirect('list');
+    return redirect('/list');
   }
-  
-  
-  
 
   return  ( 
     <div className="flex-1 w-full flex flex-col gap-20 items-center">

@@ -1,44 +1,45 @@
-import Header from '@/components/Header';
-import { createClient } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation';
-import React from 'react'
-import List from './components/List';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
+import { Sales, columns } from "./columns"
+import { DataTable } from "./data-table"
+import { createClient } from '@/utils/supabase/server';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Modal from "./components/Modal";
 
-const page = async () => {
-    const supabase = createClient();
-    
-    const { data: { user },} = await supabase.auth.getUser();
-
-    if(!user){
-        return redirect('/login');
-    }
-    
-    const {data} : any = await supabase.from('org').select('*').eq('email', user?.email);
-
-    const orgName = data[0]?.org;
-
+async function getData(): Promise<Sales[]> {
+  // Fetch data from your API here.
+  const supabase = createClient();
   
-  let { data: sales, error } = await supabase.from('sales').select('*')
-        
-    //console.log(sales)
+let { data: sales, error } : any = await supabase
+.from('sales')
+.select('*')
 
-  return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-    <Header />
-    <Button>Click me</Button>
-      list
-      <br></br>
-      {orgName}
-      <div>
-        {sales?.map((sale) => (
-          <List key={sale.id} id={sale.id} created_at={sale.created_at} client={sale.client} phone={sale.phone} person={sale.person} status={sale.status} accept={sale.accept} hot={sale.hot}/> 
-        ))}
-      </div>
-    <Footer/>
-    </div>
-  )
+//console.log(sales);
+if(error){
+    console.log(error);
+}
+        
+  return sales;
+    
 }
 
-export default page
+
+export default async function DemoPage() {
+
+  const data = await getData()
+
+  return (
+    <>
+    <div className="w-full">
+      <Header/>
+    </div>
+    <Modal/>
+    <div className="container mx-auto py-5 w-auto">
+      <DataTable columns={columns} data={data} />
+    </div>
+   
+    <div className="w-full">
+    <Footer/>
+    </div>
+    </>
+  )
+}
