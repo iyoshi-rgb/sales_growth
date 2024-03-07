@@ -2,9 +2,14 @@
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import AddSale from './AddSale'
+import { createContext } from 'vm';
+
+export const ModalOpen = createContext();
 
 const Modal = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+
+  const value = {isOpen,setIsOpen};
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -16,9 +21,11 @@ const Modal = () => {
         Add 
       </Button>
       {isOpen && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center transition-opacity duration-300'>
-          <div className='bg-white p-5 rounded transition-transform duration-300 transform scale-95'>
+        <div className=''>
+          <div className=''>
+            
             <AddSale/>
+    
             <Button onClick={toggleModal} variant='ghost'>
                 Close
             </Button>
