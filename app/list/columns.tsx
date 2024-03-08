@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { createClient } from "@/utils/supabase/client"
 import { useEffect, useState } from "react"
+import EditModal from "./components/EditModal"
+import { redirect } from "next/navigation"
+import Modal from "./components/Modal"
  
 
 // This type is used to define the shape of our data.
@@ -91,6 +94,8 @@ export const columns: ColumnDef<Sales>[] = [
       const saleInfo = row.original
 
       const [deleteId,setId] = useState<number | null>(null);
+      const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+      const [editInfo, setEditInfo] = useState(null);
 
       useEffect(() => {
         const deleteDB = async ()  => {
@@ -112,9 +117,15 @@ export const columns: ColumnDef<Sales>[] = [
 
       },[deleteId])
 
-      const handleEdit = () => {
-        console.log('handleEdit');
+      const handleEdit = (Info: any) => {
+        setEditInfo(Info);
+        setIsModalOpen(true);
       }
+
+      useEffect(() => {
+        if(editInfo === null) return;
+
+      },[editInfo])
 
       const handleDelete = (id: number) => {
         setId(id);
@@ -123,24 +134,22 @@ export const columns: ColumnDef<Sales>[] = [
       
  
       return (
+        <>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="h-8 w-8 p-0" >
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(saleInfo.client)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleEdit()}>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleEdit(saleInfo)}>Edit</DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDelete(saleInfo.id)}><div className="text-red-500">Delete</div></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        {isModalOpen && (<EditModal editInfo={editInfo}/>)}
+        </>
       )
     },
   },
