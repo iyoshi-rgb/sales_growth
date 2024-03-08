@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { redirect } from "next/navigation";
+import TopPage from "./components/TopPage";
+import Login from "./components/Login";
 
 
 export default async function Index() {
@@ -13,21 +13,20 @@ export default async function Index() {
     } = await supabase.auth.getUser();
   
     if (user) {
-      return redirect("/protected");
+      return redirect("/home");
     }
 
   
  
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <Header />
-
-      <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-        <main className="flex-1 flex flex-col gap-6">
-          Top Page
-        </main>
+    <div className="flex h-screen">
+      <div className="w-1/2 h-full bg-gray-100">
+        <TopPage/>
       </div>
-      <Footer/>
+      <div className="w-1/2 h-full flex justify-center items-center">
+        <Login/>
+      </div>
     </div>
+
   );
   }

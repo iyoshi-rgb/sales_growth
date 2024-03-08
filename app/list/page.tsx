@@ -12,7 +12,6 @@ let { data: sales, error } : any = await supabase
 .from('sales')
 .select('*')
 
-//console.log(sales);
 if(error){
     console.log(error);
 }
@@ -35,9 +34,6 @@ export default async function DemoPage() {
       <DataTable columns={columns} data={data} />
     </div>
    
-    <div className="w-full">
-    <Footer/>
-    </div>
     </>
   )
 }
