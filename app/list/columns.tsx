@@ -13,12 +13,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { createClient } from "@/utils/supabase/client"
+import { useEffect, useState } from "react"
  
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Sales = {
-  id: string
+  id: number
   created_at: string
     client: string
     phone: string
@@ -30,6 +32,7 @@ export type Sales = {
 }
 
 export const columns: ColumnDef<Sales>[] = [
+
   {
     id: "select",
     header: ({ table }) => (
@@ -85,7 +88,39 @@ export const columns: ColumnDef<Sales>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original
+      const saleInfo = row.original
+
+      const [deleteId,setId] = useState<number | null>(null);
+
+      useEffect(() => {
+        const deleteDB = async ()  => {
+          if(deleteId === null) return;
+
+
+          const supabase = createClient();
+          const { error }  = await supabase.from('sales').delete().eq('id', deleteId);
+          console.log(deleteId);
+          if(error){
+            console.log(error);
+          }else{
+            console.log('success');
+            setId(null);
+          }
+        };
+
+        deleteDB();
+
+      },[deleteId])
+
+      const handleEdit = () => {
+        console.log('handleEdit');
+      }
+
+      const handleDelete = (id: number) => {
+        setId(id);
+      }
+
+      
  
       return (
         <DropdownMenu>
@@ -96,15 +131,14 @@ export const columns: ColumnDef<Sales>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(saleInfo.client)}
             >
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleEdit()}>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(saleInfo.id)}><div className="text-red-500">Delete</div></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

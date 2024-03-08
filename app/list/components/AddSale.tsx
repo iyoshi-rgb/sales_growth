@@ -1,6 +1,6 @@
 'use client'
 import { createClient } from '@/utils/supabase/client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { ModalContext } from './Modal'
 
 
 const formSchema = z.object({
@@ -45,7 +46,16 @@ const formSchema = z.object({
 })
 
 
-const AddSale = () => {
+const AddSale: React.FC =  () => {
+
+  const modalContext = useContext(ModalContext);
+
+  if (!modalContext) {
+    console.error('AddSale must be used within a ModalContext.Provider');
+    return null;
+  }
+  
+  const{ isOpen, setIsOpen} = modalContext;
 
   const today = new Date();
   const [submitData, setSubmitData] = useState<z.infer<typeof formSchema> | null>(null);
@@ -97,6 +107,7 @@ const AddSale = () => {
     };
     insertDB();
     setSubmitData(null);
+    setIsOpen(!isOpen);
   },[submitData])
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {

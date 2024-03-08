@@ -24,6 +24,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as React from "react"
+import AddSale from "./components/AddSale"
+import Modal from "./components/Modal"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -61,16 +63,17 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div>
-        <div className="flex items-center w-20 py-4">
+    <div className="mx-10">
+        <div className="flex items-center w-auto py-4">
         <Input
-          placeholder="🔍会社"
+          placeholder="Filter 会社名..."
           value={(table.getColumn("client")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("client")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
+        <Modal />
       </div>
     <div className="rounded-md border">
       <Table>
