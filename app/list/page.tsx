@@ -3,6 +3,7 @@ import { DataTable } from "./data-table"
 import { createClient } from '@/utils/supabase/server';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Nav from "../../components/Nav";
 
 async function getData(): Promise<Sales[]> {
   // Fetch data from your API here.
@@ -28,7 +29,7 @@ export default async function DemoPage() {
   return (
     <>
     <div className="w-full">
-      <Header/>
+      <Nav/>
     </div>
     <div className="container mx-auto py-5 w-auto">
       <DataTable columns={columns} data={data} />
