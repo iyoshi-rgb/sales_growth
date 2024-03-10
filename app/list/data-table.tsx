@@ -24,7 +24,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as React from "react"
-import AddSale from "./components/AddSale"
 import Modal from "./components/Modal"
 
 interface DataTableProps<TData, TValue> {

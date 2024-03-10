@@ -17,7 +17,8 @@ import { createClient } from "@/utils/supabase/client"
 import { useEffect, useState } from "react"
 import EditModal from "./components/EditModal"
 import { redirect } from "next/navigation"
-import Modal from "./components/Modal"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
  
 
 // This type is used to define the shape of our data.
@@ -93,6 +94,8 @@ export const columns: ColumnDef<Sales>[] = [
     cell: ({ row }) => {
       const saleInfo = row.original
 
+      const router = useRouter();
+
       const [deleteId,setId] = useState<number | null>(null);
       const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
       const [editInfo, setEditInfo] = useState(null);
@@ -110,6 +113,8 @@ export const columns: ColumnDef<Sales>[] = [
           }else{
             console.log('success');
             setId(null);
+            router.push('/list');
+            router.refresh();
           }
         };
 
@@ -117,9 +122,9 @@ export const columns: ColumnDef<Sales>[] = [
 
       },[deleteId])
 
-      const handleEdit = (Info: any) => {
-        setEditInfo(Info);
-        setIsModalOpen(true);
+      const handleEdit = (id: number) => {
+        console.log(id);
+        router.push('/list/${id}');
       }
 
       useEffect(() => {
@@ -144,8 +149,8 @@ export const columns: ColumnDef<Sales>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleEdit(saleInfo)}>Edit</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(saleInfo.id)}><div className="text-red-500">Delete</div></DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleEdit(saleInfo.id)} className="hover: cursor-pointer">Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(saleInfo.id)} className="hover: cursor-pointer"><div className="text-red-500">Delete</div></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         {isModalOpen && (<EditModal editInfo={editInfo}/>)}

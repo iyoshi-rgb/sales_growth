@@ -1,8 +1,6 @@
 import { Sales, columns } from "./columns"
 import { DataTable } from "./data-table"
 import { createClient } from '@/utils/supabase/server';
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Nav from "../../components/Nav";
 
 async function getData(): Promise<Sales[]> {

@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Button } from "./ui/button";
+import { LogOut } from "lucide-react";
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -21,9 +22,8 @@ export default async function AuthButton() {
 
   return user? (
     <div className="flex items-center gap-4">
-      {user.email}
       <form action={signOut}>
-        <Button className="">
+        <Button className="rounded-md bg-black text-gray-300 hover:text-white">
           Logout
         </Button>
       </form>

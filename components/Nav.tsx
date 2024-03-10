@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React from 'react'
-import { Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button'
 import { SettingsMenu } from './SettingsMenu';
+import AuthButton from './AuthButton';
 
 const Nav = () => {
   return (
@@ -26,7 +26,10 @@ const Nav = () => {
                     </Link>
                 </ul>
             </nav>
-                <SettingsMenu />
+            <div className='flex items-center gap-3'>
+            <SettingsMenu />
+            <AuthButton/>
+            </div>
             </div>
        
         </div>

@@ -1,10 +1,10 @@
-import Nav from '@/components/Nav'
+'use client'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-        <Nav/>
+        
       Contact Form
     </div>
   )
