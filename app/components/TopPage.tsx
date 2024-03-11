@@ -6,6 +6,7 @@ const TopPage = () => {
     <div className='ml-3 mt-3'>
         <p className='font-bold text-lg'>Sales Growth</p>
     </div>
+    
     </div>
   )
 }

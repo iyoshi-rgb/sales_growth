@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { ModalContext } from './Modal'
+import { useRouter } from 'next/navigation'
 
 
 const formSchema = z.object({
@@ -49,6 +50,7 @@ const formSchema = z.object({
 const AddSale: React.FC =  () => {
 
   const modalContext = useContext(ModalContext);
+  const router = useRouter();
 
   if (!modalContext) {
     console.error('AddSale must be used within a ModalContext.Provider');
@@ -96,6 +98,7 @@ const AddSale: React.FC =  () => {
         phone : submitData.phone,
         person : submitData.person,
         status : submitData.status, 
+        email: 'yoshito.i.2002@gmail.com'
         },]).select()
   
     if(data){
@@ -108,6 +111,8 @@ const AddSale: React.FC =  () => {
     insertDB();
     setSubmitData(null);
     setIsOpen(!isOpen);
+    router.push('/list');
+    router.refresh()
   },[submitData])
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
