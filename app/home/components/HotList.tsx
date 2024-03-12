@@ -3,24 +3,21 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
 
-const HotList = () => {
+const HotList  = ()=> {
+        
   return (
     <Card>
   <CardHeader>
-    <CardTitle>Card Title</CardTitle>
-    <CardDescription>Card Description</CardDescription>
+    <CardTitle>Member</CardTitle>
+    <CardDescription>Your Member</CardDescription>
   </CardHeader>
   <CardContent>
-    <p>Card Content</p>
+
   </CardContent>
-  <CardFooter>
-    <p>Card Footer</p>
-  </CardFooter>
 </Card>
   )
 }

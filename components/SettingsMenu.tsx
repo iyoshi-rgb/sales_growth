@@ -1,4 +1,4 @@
-import {LogOut,Mail,MessageSquare,Settings,User,UserPlus,} from "lucide-react"
+import {Settings,User,UserPlus,} from "lucide-react"
    
   import {
     DropdownMenu,
@@ -15,7 +15,7 @@ import {LogOut,Mail,MessageSquare,Settings,User,UserPlus,} from "lucide-react"
 
   import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { Button } from "./ui/button";
+
    
   export async function SettingsMenu() {
 
@@ -58,11 +58,9 @@ import { Button } from "./ui/button";
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
                   <DropdownMenuItem>
-                    <Mail className="mr-2 h-4 w-4" />
                     <span className="hover: cursor-pointer">Add</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <MessageSquare className="mr-2 h-4 w-4" />
                     <span className="text-red-500 hover: cursor-pointer">Delete</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
