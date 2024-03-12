@@ -5,6 +5,9 @@ import { SettingsMenu } from './SettingsMenu';
 import AuthButton from './AuthButton';
 
 const Nav = () => {
+    const handleClick = () => {
+        console.log('BUtton Click')
+    }
   return (
     <div className="border-b border-b-gray-400">
         <div className="flex items-center justify-start mb-3 mx-5 pt-2">

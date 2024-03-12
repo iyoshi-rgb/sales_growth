@@ -45,7 +45,7 @@ import { useRouter } from 'next/navigation'
   }
   
   const formSchema = z.object({
-    username: z.string(),
+    username: z.string().min(1),
   })
   
   const Sample :  React.FC<MembersProps> = ({ members , org})=> {
@@ -94,12 +94,14 @@ import { useRouter } from 'next/navigation'
   <CardContent>
   {members?.length  ? (
             members?.map((member) => (
-              <div key={member.id} className='flex items-center justify-center mb-3 mx-5'>
+              <div key={member.id} className='grid grid-cols-3 gap-4'>
+                <div className='flex items-center justify-center mb-3 mx-5'>
             <CircleUser className='flex-shrink-0'/>
             <div className='flex flex-grow ml-4 '>
                 <div>
                     {member.name}
                 </div>
+            </div>
             </div>
             </div>
             ))
@@ -128,7 +130,7 @@ import { useRouter } from 'next/navigation'
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="営業 太郎" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
