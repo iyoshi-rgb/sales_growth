@@ -1,83 +1,60 @@
 'use client'
 import { createClient } from '@/utils/supabase/client'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, use } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { ModalContext } from './Modal'
+
 import { useRouter } from 'next/navigation'
 
+interface Props{
+  users: {
+    id: number
+    person: string
+  }[],
+  auth: string | null | undefined
+}
 
-const formSchema = z.object({
-  date: z.date(), 
-  client: z.string().min(2).max(50),
-  phone: z.string().min(1).max(50),
-  person: z.string(),
-  status: z.string(),
+type addValues = {
+  created_at: Date
+  client: string
+  phone: string
+  person: string
+  status: string
+}
 
-})
 
 
-const AddSale: React.FC =  () => {
+const AddSale = ({users, auth} : Props) => {
 
-  const modalContext = useContext(ModalContext);
+  console.log(users)
+
   const router = useRouter();
-
-  if (!modalContext) {
-    console.error('AddSale must be used within a ModalContext.Provider');
-    return null;
-  }
   
-  const{ isOpen, setIsOpen} = modalContext;
-
   const today = new Date();
-  const [submitData, setSubmitData] = useState<z.infer<typeof formSchema> | null>(null);
- 
+  const [submitData,setSubmitData] = useState<any>();
 
-    const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      client: "",
-      phone: "",
-      person: "",
-      date: today,
-    },
-  })
- 
-  function formatDate(date : Date) {
-    const year = date.getFullYear();
-    // getMonth()は0から始まるため、+1をする。月が一桁の場合には先頭に0を付ける。
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    // getDate()で日にちを取得し、日が一桁の場合には先頭に0を付ける。
-    const day = ('0' + date.getDate()).slice(-2);
-  
-    return `${year}-${month}-${day}`;
+  const defaultValues = {
+    created_at: today,
+    client: '',
+    phone: '',
+    person: '',
+    status: '',
+
   }
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { isDirty, isValid },
+  } = useForm<addValues>({
+    mode: 'onChange',
+    defaultValues,
+  })
+
+
+
+ 
   
   useEffect(() => {
     if (!submitData) return;
@@ -85,16 +62,16 @@ const AddSale: React.FC =  () => {
     const insertDB  = async () =>  {
   
       const supabase = createClient();
-      console.log(submitData)
       
       const { data, error } : any =  await supabase.from('sales')
       .insert([
-        {created_at: formatDate(submitData.date),
-         client : submitData.client,
+        {
+        created_at: today,
+        client : submitData.client,
         phone : submitData.phone,
         person : submitData.person,
         status : submitData.status, 
-        email: 'yoshito.i.2002@gmail.com'
+        email: auth,
         },]).select()
   
     if(data){
@@ -106,129 +83,58 @@ const AddSale: React.FC =  () => {
     };
     insertDB();
     setSubmitData(null);
-    setIsOpen(!isOpen);
     router.push('/list');
     router.refresh()
   },[submitData])
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+
+  const onSubmit = (values: addValues) => {
     setSubmitData(values);
   }
   
     return (
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className='flex items-center gap-2'>
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>日付</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </FormItem>
-          )}
-        />
-            <FormField
-              control={form.control}
-              name="client"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="会社名" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col w-full justify-center text-foreground gap-3">
+        <label className="text-md">
+          client
+        </label>
+            <input
+              className="rounded-md px-4 py-2 bg-inherit border"
+              {...register('client', { required: '入力してください' })} 
+              placeholder="●●株式会社" 
             />
-             <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="電話番号" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="person"
-              render={({ field }) => (
-              <FormItem>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-              <SelectTrigger className="w-[180px]">
-              <SelectValue  placeholder="担当者" />
-              </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                 <SelectItem value="池田">池田</SelectItem>
-                  <SelectItem value="津田">津田</SelectItem>
-                  <SelectItem value="小谷">小谷</SelectItem>
-                  <SelectItem value="村瀬">村瀬</SelectItem>
-              </SelectContent>
-          </Select>
-          </FormItem>
-        )}
-        />
-        <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => (
-              <FormItem>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="結果" />
-        
-      </SelectTrigger>
-      </FormControl>
-      <SelectContent>
-          <SelectItem value="未荷電">未荷電</SelectItem>
-          <SelectItem value="再架電">再架電</SelectItem>
-          <SelectItem value="アポ取得">アポ取得</SelectItem>
-          <SelectItem value="不在">不在</SelectItem>
-      </SelectContent>
-    </Select>
-    </FormItem>
-              )}
-              />
-            <Button type="submit">Submit</Button>
-            </div>
+        <label className="text-md">
+          phone
+        </label>
+          <input
+            className="rounded-md px-4 py-2 bg-inherit border"
+            {...register('phone', { required: true })} 
+            placeholder="***-***-***" 
+          />
+       <label className="text-md">
+          担当者
+        </label>  
+        <select {...register('person', { required: false })}
+        defaultValue={defaultValues.person} className="rounded-md px-4 py-2 bg-inherit border">
+          {users?.map((user : any) => (
+            <option value={user.person} key={user.id}>
+              {user.person}
+            </option>
+          ))}
+        </select>
+        <label className="text-md">
+          状況
+        </label>
+        <select {...register('status', { required: false })}
+        defaultValue={defaultValues.status} className="rounded-md px-4 py-2 bg-inherit border">
+        <option value="再架電">再架電</option>
+          <option value="アポ取得">アポ取得</option>
+          <option value="不在">不在</option>
+      
+        </select>
+            <Button variant={'outline'} type="submit">Submit</Button>
+
           </form>
-        </Form>
+        </div>
       )
   }
 

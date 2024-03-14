@@ -84,14 +84,16 @@ export default async function Home() {
 
   let { data: sales, error } = await supabase
     .from('sales')
-    .select('created_at,person').eq('email', user.email);
+    .select('created_at,person').eq('email', user.email).eq('status', 'アポ取得');
 
 
   if (error) {
     console.log(error);
+  }else{
+    console.log(sales);
   }
 
-  let { data: member } = await supabase.from('members').select('id, name').eq('org', user.email);
+  let { data: member } = await supabase.from('members').select('id, person').eq('org', user.email);
 
   if (error) {
     console.log(error)

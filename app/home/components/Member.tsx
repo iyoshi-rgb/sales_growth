@@ -35,7 +35,7 @@ import { useRouter } from 'next/navigation'
 
   interface Member {
     id: number;
-    name: string;
+    person: string;
   }
 
   
@@ -66,7 +66,7 @@ import { useRouter } from 'next/navigation'
 
       const addUser = async () => {
         const { data, error } = await supabase.from('members')
-        .insert([{ name: addName.username, org: org },])
+        .insert([{ person: addName.username, org: org },])
         .select()
         if(data){
           router.push('/home')
@@ -99,7 +99,7 @@ import { useRouter } from 'next/navigation'
             <CircleUser className='flex-shrink-0'/>
             <div className='flex flex-grow ml-4 '>
                 <div>
-                    {member.name}
+                    {member.person}
                 </div>
             </div>
             </div>

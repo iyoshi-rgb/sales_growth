@@ -1,15 +1,16 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal,ArrowUpDown, CalendarIcon, Calendar,Delete, Phone,FilePenLine   } from "lucide-react"
+import { BookPlus,ArrowUpDown,Delete, Phone,FilePenLine, } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import {
   Sheet,
   SheetClose,
@@ -20,23 +21,21 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Input } from "@/components/ui/input"
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { createClient } from "@/utils/supabase/client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Select, SelectTrigger } from "@radix-ui/react-select"
-import { SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover"
+import EditForm from "./components/EditForm"
+import AddList from "./components/AddList"
+
  
 export type Sales = {
   id: number
@@ -50,14 +49,7 @@ export type Sales = {
     org: string
 }
 
-const formSchema = z.object({
-  date: z.date(), 
-  client: z.string().min(2).max(50),
-  phone: z.string().min(1).max(50),
-  person: z.string(),
-  status: z.string(),
 
-})
 
 export const columns: ColumnDef<Sales>[] = [
 
@@ -90,14 +82,12 @@ export const columns: ColumnDef<Sales>[] = [
       },
       {
         accessorKey: "status",
-        header: "結果",
+        header: "状態",
       },
   {
     id: "actions",
     cell: ({ row }) => {
       const saleInfo = row.original
-
-      const today = new Date();
 
 
       const router = useRouter();
@@ -105,7 +95,19 @@ export const columns: ColumnDef<Sales>[] = [
 
       const [deleteId,setId] = useState<number | null>(null);
       const [editInfo, setEditInfo] = useState<Sales | null>(null);
-      const [updateDB,setUpdateDB] = useState<z.infer<typeof formSchema> | null>(null);
+      const [users,setUsers] = useState<any>();
+
+      useEffect(() => {
+        const getMember = async () => {
+          const supabase = createClient();
+          let { data: members, error } = await supabase.from('members').select('id,person')
+          if(error){
+            return error
+          }
+          setUsers(members)
+        }
+        getMember();
+      }, []);
 
       const handleDelete = (id: number) => {
         setId(id);
@@ -134,52 +136,13 @@ export const columns: ColumnDef<Sales>[] = [
         setEditInfo(saleInfo);
       }
 
-      useEffect(() => {
-        if(editInfo === null) return;
-        console.log(editInfo);
 
-      },[editInfo])
 
-      const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-          client: editInfo?.client,
-          phone: editInfo?.phone,
-          person: editInfo?.person,
-          date: today,
-        },
-      })
-
-      const onSubmit = (values: z.infer<typeof formSchema>) => {
-        setUpdateDB(values);
-        console.log(updateDB);
-      };
-
-      useEffect(() => {
-        if(!updateDB)return;
-
-        const ChangeData = async () => {
-          const { data, error } = await supabase.from('sales')
-          .update({ 
-          'created_at': updateDB.date,
-          'client': updateDB.client,
-          'phone': updateDB.phone,
-          'person': updateDB.person,
-          'status': updateDB.status })
-          .eq('id', editInfo?.id)
-          .select()
-          if(error){
-          console.log(error)
-          }
-        }
-        ChangeData();
-
-      },[updateDB])
-  
+    
       
  
       return (
-        <div className="w-auto">
+        <>
         <Sheet>
         <SheetTrigger asChild>
         <Button onClick={() => handleEdit(saleInfo)}><FilePenLine/></Button>
@@ -189,63 +152,7 @@ export const columns: ColumnDef<Sales>[] = [
             <SheetTitle>Edit</SheetTitle>
           </SheetHeader>
           <div className="grid gap-4 py-4 bg-white">
-          <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="client"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Client</FormLabel>
-              <FormControl>
-                <Input placeholder='' {...field}/>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel></FormLabel>
-              <FormControl>
-                <Input placeholder='' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="person"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder='' value={editInfo?.person} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="status"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Status</FormLabel>
-              <FormControl>
-                <Input placeholder='' value={editInfo?.status} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+          {editInfo && <EditForm key={editInfo.id} editInfo={editInfo} users={users}/>}
          </div>
   
           <SheetFooter>
@@ -255,9 +162,37 @@ export const columns: ColumnDef<Sales>[] = [
           </SheetFooter>
         </SheetContent>
       </Sheet>
-      <Button onClick={() => handleDelete(saleInfo.id)}><Delete className="text-red-400"/></Button>
+      <AlertDialog >
+      <AlertDialogTrigger asChild>
+      <Button><Delete className="text-red-400"/></Button>
+      </AlertDialogTrigger>
+
+      <AlertDialogContent className="bg-white">
+        <AlertDialogHeader>
+          <AlertDialogTitle>削除しますか？</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction><Button variant='outline' className="bg-black text-white" onClick={() => handleDelete(saleInfo.id)}>Continue</Button></AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
       <Button onClick={() => navigator.clipboard.writeText(saleInfo.phone)}><Phone/></Button>
-        </div>
+      {! saleInfo.accept && 
+      <>
+      <Dialog>
+        <DialogTrigger asChild><Button><BookPlus/></Button></DialogTrigger>
+        <DialogContent className="bg-white">
+          <DialogHeader>
+            <DialogTitle>誰のリストに追加しますか？</DialogTitle>
+          </DialogHeader>
+          <AddList id={saleInfo.id} users={users}/>
+        </DialogContent>
+      </Dialog>
+      </>
+      
+      }
+        </>
       )
     },
   },

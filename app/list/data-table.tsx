@@ -21,10 +21,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as React from "react"
-import Modal from "./components/Modal"
+import AddSale from "./components/AddSale"
+import { createClient } from "@/utils/supabase/client"
+import Link from "next/link"
+import { BookPlus } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -41,6 +53,30 @@ export function DataTable<TData, TValue>({
     const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const [users,setUsers] = React.useState<any>();
+  const [auth,setAuth] = React.useState<string | null>();
+
+  React.useEffect(() => {
+    const supabase = createClient();
+    const getMember = async () => {
+      let { data: members, error } = await supabase.from('members').select('id,person')
+      if(error){
+        return error
+      }
+      setUsers(members)
+    }
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      
+      setAuth(user?.email)
+    }
+
+    getMember();
+    getUser();
+  }, []);
+
 
   const table = useReactTable({
     data,
@@ -72,7 +108,36 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <Modal />
+        <Input
+          placeholder="名前"
+          value={(table.getColumn("person")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("person")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+        
+        <Sheet>
+        <SheetTrigger asChild>
+        <Button variant='outline'> Add</Button>
+        </SheetTrigger>
+        <SheetContent className='bg-white'>
+          <SheetHeader>
+            <SheetTitle>Add</SheetTitle>
+          </SheetHeader>
+          <div className="grid gap-4 py-4 bg-white">
+            <AddSale users={users} auth={auth}/>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant='outline'>Close</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+      <Link href={'/list'}>
+            <Button variant={'outline'}><BookPlus/>一覧</Button>
+          </Link>
       </div>
     <div className="rounded-md border">
       <Table>
