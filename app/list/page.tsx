@@ -1,5 +1,5 @@
-import { Sales, columns } from "./columns"
-import { DataTable } from "./data-table"
+import { Sales, columns } from "./components/columns"
+import { DataTable } from "./components/data-table"
 import { createClient } from '@/utils/supabase/server';
 import Nav from "../../components/Nav";
 

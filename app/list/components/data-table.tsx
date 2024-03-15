@@ -14,6 +14,15 @@ import {
 } from "@tanstack/react-table"
 
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+import {
   Table,
   TableBody,
   TableCell,
@@ -33,10 +42,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as React from "react"
-import AddSale from "./components/AddSale"
+import AddSale from "./data-table/AddSale"
 import { createClient } from "@/utils/supabase/client"
 import Link from "next/link"
 import { BookPlus } from "lucide-react"
+import SerchList from "../[person]/components/SerchList"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -135,9 +145,15 @@ export function DataTable<TData, TValue>({
           </SheetFooter>
         </SheetContent>
       </Sheet>
-      <Link href={'/list'}>
-            <Button variant={'outline'}><BookPlus/>一覧</Button>
-          </Link>
+      <Dialog>
+        <DialogTrigger asChild><Button variant={'outline'}><BookPlus/>一覧</Button></DialogTrigger>
+        <DialogContent className="bg-white">
+          <DialogHeader>
+            <DialogTitle>誰のリストを見ますか？</DialogTitle>
+          </DialogHeader>
+          <SerchList users={users}/>
+        </DialogContent>
+      </Dialog>
       </div>
     <div className="rounded-md border">
       <Table>

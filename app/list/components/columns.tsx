@@ -33,8 +33,8 @@ import {
 import { createClient } from "@/utils/supabase/client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import EditForm from "./components/EditForm"
-import AddList from "./components/AddList"
+import EditForm from "./columns/EditForm"
+import AddList from "./columns/AddList"
 
  
 export type Sales = {

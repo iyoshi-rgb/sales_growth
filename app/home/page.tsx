@@ -128,8 +128,10 @@ export default async function Home() {
 
 
 
+
   return (
     <>
+
       <Nav />
       <p className="font-bold text-4xl py-4 px-4">Dashboard</p>
       <div className="flex items-center">
