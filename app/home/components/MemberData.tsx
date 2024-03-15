@@ -1,57 +1,71 @@
-import React from 'react'
+"use client";
+import React, { useState } from "react";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-import { CircleUser } from 'lucide-react';
+import { CircleUser } from "lucide-react";
 
-
-
-interface Props{
-    members: Record<string, Record<string, number>>;
+interface Member {
+  id: number;
+  person: string;
 }
 
-const MemberData = ({members} : Props) => {
-    const now = new Date();
-  const thisYear = now.getFullYear();
-  const thisMonth = now.getMonth() + 1; // 月は0から始まるため+1
-  const thisYearMonth = `${thisYear}-${thisMonth}`;
+interface Props {
+  members: Record<string, number>;
+  title: string;
+  users: Member[] | null;
+  boolean: boolean;
+}
 
-  // 今月のデータを取得
-  const thisMonthData = members[thisYearMonth];
+const MemberData = ({ users, members, title, boolean }: Props) => {
+  const membersData = Object.entries(members).map(([person, count]) => ({
+    person,
+    count,
+  }));
 
-    //console.log(members);
+  const data = users?.map((user) => {
+    const memberEntry = membersData.find(
+      (entry) => entry.person === user.person
+    );
+    return {
+      ...user,
+      count: memberEntry ? memberEntry.count : 0,
+    };
+  });
+
   return (
-    <Card >
-    <CardHeader>
-      <div className=''>
-        <CardTitle>This Month</CardTitle>
-      </div>
-      <CardDescription className='text-gray-400 pl-3 pb-3'>
-        {thisYearMonth}
-      </CardDescription>
-    </CardHeader>
-      <CardContent className=''>
-        {thisMonthData && Object.entries(thisMonthData).map(([person, count]) => (
-          <div key={person} className='flex items-center justify-start mb-3 mx-5'>
-            <CircleUser className='flex-shrink-0'/>
-            <div className='flex justify-between flex-grow ml-4'>
-                <div>
-                    {person}
-                </div>
-                <div className=''>
-                    {count}
-                </div>
+    <Card className="w-[280px]">
+      <CardHeader>
+        <CardTitle>
+          <span>{title}</span>
+        </CardTitle>
+        <CardDescription></CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-4">
+          {data?.map((dataItem) => (
+            <div
+              key={dataItem.id}
+              className="flex items-center justify-center mb-3"
+            >
+              <CircleUser className="flex-shrink-0" />
+              <div className="flex flex-grow ">
+                <div className="pl-2">{dataItem.person}</div>
+              </div>
+              <div className="flex flex-grow">
+                <div className="">{dataItem.count}件</div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </CardContent>
-  </Card>
-  )
-}
+    </Card>
+  );
+};
 
-export default MemberData
+export default MemberData;

@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" className={GeistSans.className}>
+    <html lang="ja" >
       <body className="bg-background text-foreground">
         <main className="min-h-screen">
           {children}

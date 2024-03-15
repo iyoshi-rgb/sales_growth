@@ -1,3 +1,4 @@
+"use client";
 import {
   Sheet,
   SheetClose,
@@ -6,87 +7,151 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
-import { CircleUser,UserPlus  } from 'lucide-react';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BookPlus, CircleUser, UserPlus, UserX } from "lucide-react";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
-import MemberAddForm from './MemberAddForm'
+import MemberAddForm from "./Member/MemberAddForm";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
-  interface Member {
-    id: number;
-    person: string;
-  }
+interface Member {
+  id: number;
+  person: string;
+}
 
-  
-  interface MembersProps {
-    members: Member[] | null;
-    org: string | undefined;
-  }
+interface MembersProps {
+  members: Member[] | null;
+  org: string | undefined;
+}
 
-  const Sample :  React.FC<MembersProps> = ({ members , org})=> {
+const Sample: React.FC<MembersProps> = ({ members, org }) => {
+  const [deleteId, setDeleteId] = useState<number | null>();
+  const router = useRouter();
 
+  const handleDelete = (id: number) => {
+    setDeleteId(id);
+  };
+
+  useEffect(() => {
+    const deleteDB = async () => {
+      if (deleteId === null) return;
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("members")
+        .delete()
+        .eq("id", deleteId);
+
+      if (!error) {
+        console.log("success");
+        setDeleteId(null);
+        router.push("/home");
+        router.refresh();
+      }
+    };
+    deleteDB();
+  }, [deleteId]);
 
   return (
-    <div className=''>
+    <div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Your team Member</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {members?.length ? (
+            <div className="grid grid-cols-2 gap-4">
+              {members.map((member) => (
+                <div
+                  key={member.id}
+                  className="flex items-center justify-center mb-3 mx-5"
+                >
+                  <CircleUser className="flex-shrink-0" />
+                  <div className="flex flex-grow ml-4">
+                    <div>{member.person}</div>
+                  </div>
+                  <div className="flex flex-grow">
+                    <Link href={`/list/${member.person}`}>
+                      <Button>
+                        <BookPlus />
+                      </Button>
+                    </Link>
+                  </div>
+                  <div className="flex flex-grow">
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button>
+                          <UserX className="text-red-400" />
+                        </Button>
+                      </AlertDialogTrigger>
 
-    <Card>
-  <CardHeader>
-    <CardTitle>Your team Member</CardTitle>
-  </CardHeader>
-  <CardContent>
-  {members?.length  ? (
-            members?.map((member) => (
-              <div key={member.id} className='grid grid-cols-3 gap-4'>
-                <div className='flex items-center justify-center mb-3 mx-5'>
-            <CircleUser className='flex-shrink-0'/>
-            <div className='flex flex-grow ml-4 '>
-                <div>
-                    {member.person}
+                      <AlertDialogContent className="bg-white">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>削除しますか？</AlertDialogTitle>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>やめる</AlertDialogCancel>
+                          <AlertDialogAction>
+                            <Button
+                              variant="outline"
+                              className="bg-black text-white"
+                              onClick={() => handleDelete(member.id)}
+                            >
+                              削除
+                            </Button>
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </div>
+              ))}
             </div>
-            <Link href={`/list/${member.person}`}>aaaa</Link>
-            </div>
-            </div>
-            ))
           ) : (
             <p>メンバーを登録しましょう!!</p>
           )}
         </CardContent>
-  <div className='text-center mb-2'>
-  <Sheet>
-      <SheetTrigger asChild>
-      <Button variant='outline'>
-        <UserPlus/><span className='pl-2 font-bold'>追加</span>
-      </Button>
-      </SheetTrigger>
-      <SheetContent className='bg-white'>
-        <SheetHeader>
-          <SheetTitle>Add Member</SheetTitle>
-        </SheetHeader>
-        <div className="grid gap-4 py-4 bg-white">
-        <MemberAddForm org={org}/>
+        <div className="text-center mb-2">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">
+                <UserPlus />
+                <span className="pl-2 font-bold">追加</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="bg-white">
+              <SheetHeader>
+                <SheetTitle>Add Member</SheetTitle>
+              </SheetHeader>
+              <div className="grid gap-4 py-4 bg-white">
+                <MemberAddForm org={org} />
+              </div>
+
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button variant="outline">Close</Button>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
         </div>
+      </Card>
+    </div>
+  );
+};
 
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button variant='outline'>Close</Button>
-          </SheetClose>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
-  </div>
-
-</Card>
-</div>
-  )
-}
-
-export default Sample
+export default Sample;

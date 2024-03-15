@@ -109,14 +109,14 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="mx-10">
-        <div className="flex items-center w-auto py-4">
+        <div className="flex items-center w-auto py-4 ">
         <Input
           placeholder="Filter 会社名..."
           value={(table.getColumn("client")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("client")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm mx-3"
         />
         <Input
           placeholder="名前"
@@ -129,7 +129,7 @@ export function DataTable<TData, TValue>({
         
         <Sheet>
         <SheetTrigger asChild>
-        <Button variant='outline'> Add</Button>
+        <Button variant='outline' className="mx-5"> Add</Button>
         </SheetTrigger>
         <SheetContent className='bg-white'>
           <SheetHeader>

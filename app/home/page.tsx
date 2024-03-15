@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import Nav from "../../components/Nav";
 import { DataCard } from "./components/DataCard";
 import MemberData from "./components/MemberData";
-import HotList from "./components/HotList";
 import Member from "./components/Member";
 import Footer from "@/components/Footer";
 
@@ -36,15 +35,17 @@ const countPersonByMonth = (groupedRecords: Record<string, Sales[]>) => {
   }, {} as Record<string, Record<string, number>>);
 };
 
-
 const getThisMonthRecords = (records: Sales[]): Sales[] => {
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth();
 
-  return records.filter(record => {
+  return records.filter((record) => {
     const recordDate = new Date(record.created_at);
-    return recordDate.getFullYear() === currentYear && recordDate.getMonth() === currentMonth;
+    return (
+      recordDate.getFullYear() === currentYear &&
+      recordDate.getMonth() === currentMonth
+    );
   });
 };
 
@@ -58,19 +59,21 @@ const getPreMonthRecords = (records: Sales[]): Sales[] => {
     currentYear--;
   }
 
-  return records.filter(record => {
+  return records.filter((record) => {
     const recordDate = new Date(record.created_at);
-    return recordDate.getFullYear() === currentYear && recordDate.getMonth() === preMonth;
+    return (
+      recordDate.getFullYear() === currentYear &&
+      recordDate.getMonth() === preMonth
+    );
   });
 };
 
 const getMember = (records: Sales[]): string[] => {
-  const memberSet = new Set(records.map(record => record.person))
-  return Array.from(memberSet)
+  const memberSet = new Set(records.map((record) => record.person));
+  return Array.from(memberSet);
 };
 
 export default async function Home() {
-
   const supabase = createClient();
 
   const {
@@ -81,22 +84,23 @@ export default async function Home() {
     return redirect("/");
   }
 
-
   let { data: sales, error } = await supabase
-    .from('sales')
-    .select('created_at,person').eq('email', user.email).eq('status', 'アポ取得');
-
+    .from("sales")
+    .select("created_at,person")
+    .eq("email", user.email)
+    .eq("status", "アポ取得");
 
   if (error) {
     console.log(error);
-  }else{
-    console.log(sales);
   }
 
-  let { data: member } = await supabase.from('members').select('id, person').eq('org', user.email);
+  let { data: member } = await supabase
+    .from("members")
+    .select("id, person")
+    .eq("org", user.email);
 
   if (error) {
-    console.log(error)
+    console.log(error);
   }
 
   const Sales = sales || [];
@@ -108,54 +112,76 @@ export default async function Home() {
   const ThisMonthData = ThisMonthSales.length;
   const PreMonthData = PreMonthSales.length;
 
-  const difference = ThisMonthData - PreMonthData
+  const difference = ThisMonthData - PreMonthData;
 
   const groupedByMonth = groupByMonth(Sales);
+
   const personCountByMonth = countPersonByMonth(groupedByMonth);
 
+  const now = new Date();
+  const thisYear = now.getFullYear();
+  const thisMonth = now.getMonth() + 1;
+  const thisYearMonth = `${thisYear}-${thisMonth}`;
+  const preMonth = now.getMonth();
+  const preYearMonth = `${thisYear}-${preMonth}`;
 
+  const thisMonthDate = personCountByMonth[thisYearMonth];
 
-  let description = '';
+  const preMonthDate = personCountByMonth[preYearMonth];
+
+  let description = "";
   if (difference > 0) {
-    description = '対前月比: +' + difference;
+    description = "対前月比: +" + difference;
   } else if (difference === 0) {
-    description = '対前月比: ±' + difference;
+    description = "対前月比: ±" + difference;
   } else {
-    description = '対前月比: ' + difference;
+    description = "対前月比: " + difference;
   }
-
-  const members = getMember(Sales);
-
-
-
 
   return (
     <>
-
       <Nav />
-      <p className="font-bold text-4xl py-4 px-4">Dashboard</p>
-      <div className="flex items-center">
-        <div className="w-1/2 gap-4 flex items-center mx-3 my-3">
-          <DataCard title='Total Appoint' description="Our Team Total" data={data} />
-          <DataCard title='This Month' description={description} data={ThisMonthData} />
-        </div>
-        <div className="w-1/3 mx-5 my-3">
-          <Member members={member} org={user.email}/>
-        </div>
-      </div>
-      <div className="flex mt-8">
-        <div className="w-3/5 mx-2">
-          <HotList/>
-        </div>
-        <div className="w-2/5 mx-4">
-          <MemberData members={personCountByMonth} />
-        </div>
-      </div>
-      <Footer />
+      <div className="flex flex-col min-h-screen">
+        <p className="font-bold text-4xl py-4 pl-6 font-mono">Dashboard</p>
 
+        <div className="flex flex-1">
+          <div className="w-1/2 flex justify-center items-center">
+            <div className="mx-5 my-3">
+              <Member members={member} org={user.email} />
+            </div>
+          </div>
+
+          <div className="w-1/2 flex flex-col">
+            <div className="flex-1 flex items-center justify-center">
+              <div className="flex items-center justify-between mx-3 my-3 gap-4">
+                <DataCard title="合計" description="累積合計" data={data} />
+                <DataCard
+                  title="今月の合計"
+                  description={description}
+                  data={ThisMonthData}
+                />
+              </div>
+            </div>
+            <div className="flex-1 flex justify-center items-center">
+              <div className="flex items-center justify-center mx-3 my-3 gap-3">
+                <MemberData
+                  users={member}
+                  members={preMonthDate}
+                  title={preYearMonth}
+                  boolean={false}
+                />
+                <MemberData
+                  users={member}
+                  members={thisMonthDate}
+                  title={thisYearMonth}
+                  boolean={true}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
     </>
-
-
   );
-
 }
