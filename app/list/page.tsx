@@ -2,11 +2,23 @@ import { Sales, columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import { createClient } from "@/utils/supabase/server";
 import Nav from "../../components/Nav";
+import { redirect } from "next/navigation";
 
 async function getData(): Promise<Sales[]> {
   const supabase = createClient();
 
-  let { data: sales, error }: any = await supabase.from("sales").select("*");
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/");
+  }
+
+  let { data: sales, error }: any = await supabase
+    .from("sales")
+    .select("*")
+    .eq("email", user.email);
 
   if (error) {
     console.log(error);

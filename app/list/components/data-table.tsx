@@ -1,4 +1,6 @@
-"use client"
+"use client";
+
+import { useState, useEffect } from "react";
 
 import {
   ColumnDef,
@@ -11,7 +13,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Dialog,
@@ -20,7 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
 import {
   Table,
@@ -29,7 +31,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 import {
   Sheet,
   SheetClose,
@@ -38,55 +40,62 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import * as React from "react"
-import AddSale from "./data-table/AddSale"
-import { createClient } from "@/utils/supabase/client"
-import Link from "next/link"
-import { BookPlus } from "lucide-react"
-import SerchList from "../[person]/components/SerchList"
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import * as React from "react";
+import AddSale from "./data-table/AddSale";
+import { createClient } from "@/utils/supabase/client";
+import { BookPlus } from "lucide-react";
+import SerchList from "../[person]/components/SerchList";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-    const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
-  const [users,setUsers] = React.useState<any>();
-  const [auth,setAuth] = React.useState<string | null>();
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [users, setUsers] = useState<any>();
+  const [auth, setAuth] = useState<string | null>();
 
-  React.useEffect(() => {
-    const supabase = createClient();
-    const getMember = async () => {
-      let { data: members, error } = await supabase.from('members').select('id,person')
-      if(error){
-        return error
-      }
-      setUsers(members)
-    }
+  const supabase = createClient();
+
+  useEffect(() => {
     const getUser = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      
-      setAuth(user?.email)
-    }
 
-    getMember();
+      setAuth(user?.email);
+    };
+
     getUser();
   }, []);
 
+  useEffect(() => {
+    if (!auth) return;
+
+    const getMember = async () => {
+      let { data: members, error } = await supabase
+        .from("members")
+        .select("id,person")
+        .eq("org", auth);
+      if (error) {
+        return error;
+      }
+      setUsers(members);
+    };
+
+    getMember();
+  }, [auth]);
 
   const table = useReactTable({
     data,
@@ -105,11 +114,11 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="mx-10">
-        <div className="flex items-center w-auto py-4 ">
+      <div className="flex items-center w-auto py-4 ">
         <Input
           placeholder="Filter 会社名..."
           value={(table.getColumn("client")?.getFilterValue() as string) ?? ""}
@@ -126,80 +135,94 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        
+
         <Sheet>
-        <SheetTrigger asChild>
-        <Button variant='outline' className="mx-5"> Add</Button>
-        </SheetTrigger>
-        <SheetContent className='bg-white'>
-          <SheetHeader>
-            <SheetTitle>Add</SheetTitle>
-          </SheetHeader>
-          <div className="grid gap-4 py-4 bg-white">
-            <AddSale users={users} auth={auth}/>
-          </div>
-          <SheetFooter>
-            <SheetClose asChild>
-              <Button variant='outline'>Close</Button>
-            </SheetClose>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
-      <Dialog>
-        <DialogTrigger asChild><Button variant={'outline'}><BookPlus/>一覧</Button></DialogTrigger>
-        <DialogContent className="bg-white">
-          <DialogHeader>
-            <DialogTitle>誰のリストを見ますか？</DialogTitle>
-          </DialogHeader>
-          <SerchList users={users}/>
-        </DialogContent>
-      </Dialog>
+          <SheetTrigger asChild>
+            <Button variant="outline" className="mx-5">
+              {" "}
+              Add
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="bg-white">
+            <SheetHeader>
+              <SheetTitle>Add</SheetTitle>
+            </SheetHeader>
+            <div className="grid gap-4 py-4 bg-white">
+              <AddSale users={users} auth={auth} />
+            </div>
+            <SheetFooter>
+              <SheetClose asChild>
+                <Button variant="outline">Close</Button>
+              </SheetClose>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant={"outline"}>
+              <BookPlus />
+              一覧
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-white">
+            <DialogHeader>
+              <DialogTitle>誰のリストを見ますか？</DialogTitle>
+            </DialogHeader>
+            <SerchList users={users} />
+          </DialogContent>
+        </Dialog>
       </div>
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-    <div className="flex items-center justify-end space-x-2 py-4">
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
@@ -216,7 +239,7 @@ export function DataTable<TData, TValue>({
         >
           Next
         </Button>
+      </div>
     </div>
-    </div>
-  )
+  );
 }

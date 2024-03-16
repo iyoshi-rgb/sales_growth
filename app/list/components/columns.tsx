@@ -95,20 +95,35 @@ export const columns: ColumnDef<Sales>[] = [
       const [deleteId, setId] = useState<number | null>(null);
       const [editInfo, setEditInfo] = useState<Sales | null>(null);
       const [users, setUsers] = useState<any>();
+      const [auth, setAuth] = useState<string | null>();
 
       useEffect(() => {
+        const getUser = async () => {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+
+          setAuth(user?.email);
+        };
+
+        getUser();
+      }, []);
+
+      useEffect(() => {
+        if (!auth) return;
         const getMember = async () => {
           const supabase = createClient();
           let { data: members, error } = await supabase
             .from("members")
-            .select("id,person");
+            .select("id,person")
+            .eq("org", auth);
           if (error) {
             return error;
           }
           setUsers(members);
         };
         getMember();
-      }, []);
+      }, [auth]);
 
       const handleDelete = (id: number) => {
         setId(id);
