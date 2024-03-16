@@ -1,37 +1,31 @@
-import { createClient } from '@/utils/supabase/server'
-import { Sales, columns } from "../components/columns"
-import { DataTable } from "../components/data-table"
-import React from 'react'
+import { createClient } from "@/utils/supabase/server";
+import { columns } from "../components/columns";
+import { DataTable } from "../components/data-table";
+import React from "react";
 
+const page = async ({ params }: { params: { person: string } }) => {
+  const name = decodeURIComponent(params.person);
 
+  const supabase = createClient();
 
-const page = async ({params} : {params: {person : string}}) => {
+  let { data: sales, error } = await supabase
+    .from("sales")
+    .select("*")
+    .eq("list", name);
+  if (error) {
+    console.log(error);
+    sales = [];
+  }
 
-    const name = decodeURIComponent(params.person)
+  sales = sales || [];
 
-    const supabase = createClient();
-
-    
-let { data: sales, error } = await supabase
-.from('sales')
-.select('*').eq('list',name)
- if(error){
-    console.log(error)
-    sales = []
- }
-
- sales = sales || [];
-
-console.log(sales);
-  
-    return (
+  return (
     <div>
-     <div className="container mx-auto py-5 w-auto">
-      <DataTable columns={columns} data={sales} />
+      <div className="container mx-auto py-5 w-auto">
+        <DataTable columns={columns} data={sales} />
+      </div>
     </div>
+  );
+};
 
-    </div>
-  )
-}
-
-export default page
+export default page;

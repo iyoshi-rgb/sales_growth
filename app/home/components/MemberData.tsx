@@ -23,7 +23,7 @@ interface Props {
 }
 
 const MemberData = ({ users, members, title, boolean }: Props) => {
-  const membersData = Object.entries(members).map(([person, count]) => ({
+  const membersData = Object.entries(members || {}).map(([person, count]) => ({
     person,
     count,
   }));
