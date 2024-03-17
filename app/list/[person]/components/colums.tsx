@@ -38,8 +38,8 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import EditForm from "./columns/EditForm";
-import AddList from "./columns/AddList";
+import EditForm from "../../components/columns/EditForm";
+import { BookX } from "lucide-react";
 
 export type Sales = {
   id: number;
@@ -132,10 +132,12 @@ export const columns: ColumnDef<Sales>[] = [
       useEffect(() => {
         const deleteDB = async () => {
           if (deleteId === null) return;
-          const { error } = await supabase
+
+          const { data, error } = await supabase
             .from("sales")
-            .delete()
-            .eq("id", deleteId);
+            .update({ accept: false, list: null })
+            .eq("id", deleteId)
+            .select();
 
           if (error) {
             console.log(error);
@@ -186,10 +188,20 @@ export const columns: ColumnDef<Sales>[] = [
             </SheetContent>
           </Sheet>
 
+          <Button
+            onClick={() => navigator.clipboard.writeText(saleInfo.phone)}
+            className="relative group"
+          >
+            <Phone />
+            <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+              Copy
+            </span>
+          </Button>
+
           <AlertDialog>
             <AlertDialogTrigger asChild className="relative group">
               <Button>
-                <Delete className="text-red-400" />
+                <BookX className="text-red-400" />
                 <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs text-red-400 px-2">
                   削除
                 </span>
@@ -214,35 +226,6 @@ export const columns: ColumnDef<Sales>[] = [
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-          <Button
-            onClick={() => navigator.clipboard.writeText(saleInfo.phone)}
-            className="relative group"
-          >
-            <Phone />
-            <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-              Copy
-            </span>
-          </Button>
-          {!saleInfo.accept && (
-            <>
-              <Dialog>
-                <DialogTrigger asChild className="relative group">
-                  <Button>
-                    <BookPlus />
-                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-                      リストに追加
-                    </span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="bg-white">
-                  <DialogHeader>
-                    <DialogTitle>誰のリストに追加しますか？</DialogTitle>
-                  </DialogHeader>
-                  <AddList id={saleInfo.id} users={users} />
-                </DialogContent>
-              </Dialog>
-            </>
-          )}
         </>
       );
     },

@@ -44,11 +44,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import * as React from "react";
-import AddSale from "./data-table/AddSale";
+//import AddSale from "./data-table/AddSale";
 import { createClient } from "@/utils/supabase/client";
 import { Book } from "lucide-react";
 import { ClipboardPlus } from "lucide-react";
-import SerchList from "../components/data-table/SerchList";
+import SerchList from "../../components/data-table/SerchList";
+import { redirect } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -117,6 +118,10 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const handleClick = () => {
+    console.log("aaa");
+  };
+
   return (
     <div className="mx-10">
       <div className="flex items-center w-auto py-4 ">
@@ -137,29 +142,13 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
 
-        <Sheet>
-          <SheetTrigger asChild className="relative group">
-            <Button className="mx-5">
-              <ClipboardPlus />
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-                顧客の追加
-              </span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="bg-white">
-            <SheetHeader>
-              <SheetTitle>Add</SheetTitle>
-            </SheetHeader>
-            <div className="grid gap-4 py-4 bg-white">
-              <AddSale users={users} auth={auth} />
-            </div>
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button variant="outline">Close</Button>
-              </SheetClose>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
+        <Button className="mx-5 relative group" onClick={() => handleClick()}>
+          <ClipboardPlus />
+          <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+            顧客の追加
+          </span>
+        </Button>
+
         <Dialog>
           <DialogTrigger asChild className="relative group">
             <Button>

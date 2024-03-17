@@ -1,7 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
-import { columns } from "../components/columns";
-import { DataTable } from "../components/data-table";
+import { columns } from "../[person]/components/colums";
+import { DataTable } from "../[person]/components/data-table";
 import React from "react";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 const page = async ({ params }: { params: { person: string } }) => {
   const name = decodeURIComponent(params.person);
@@ -21,6 +23,8 @@ const page = async ({ params }: { params: { person: string } }) => {
 
   return (
     <div>
+      <Nav />
+      <p className="font-bold text-2xl pt-6 pl-6 font-mono">{name}のList</p>
       <div className="container mx-auto py-5 w-auto">
         <DataTable columns={columns} data={sales} />
       </div>

@@ -19,7 +19,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookPlus, CircleUser, UserPlus, UserX } from "lucide-react";
+import { Book, CircleUser, UserPlus, UserX } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -84,18 +84,24 @@ const Sample: React.FC<MembersProps> = ({ members, org }) => {
                   <div className="flex flex-grow ml-4">
                     <div>{member.person}</div>
                   </div>
-                  <div className="flex flex-grow">
+                  <div className="flex flex-grow relative group">
                     <Link href={`/list/${member.person}`}>
                       <Button>
-                        <BookPlus />
+                        <Book />
+                        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+                          {member.person}のリスト
+                        </span>
                       </Button>
                     </Link>
                   </div>
                   <div className="flex flex-grow">
                     <AlertDialog>
-                      <AlertDialogTrigger asChild>
+                      <AlertDialogTrigger asChild className="relative group">
                         <Button>
                           <UserX className="text-red-400" />
+                          <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white  text-red-400 text-xs  px-2">
+                            削除
+                          </span>
                         </Button>
                       </AlertDialogTrigger>
 

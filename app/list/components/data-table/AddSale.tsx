@@ -76,7 +76,6 @@ const AddSale = ({ users, auth }: Props) => {
     };
     insertDB();
     setSubmitData(null);
-    router.push("/list");
     router.refresh();
   }, [submitData]);
 
@@ -125,7 +124,7 @@ const AddSale = ({ users, auth }: Props) => {
           <option value="不在">不在</option>
         </select>
         <Button variant={"outline"} type="submit">
-          Submit
+          追加
         </Button>
       </form>
     </div>
