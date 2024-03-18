@@ -4,7 +4,7 @@ const TopPage = () => {
   return (
     <div className="flex justify-center items-center">
       <div className="text-center">
-        <p className="font-bold  font-mono text-2xl">Sales Growth</p>
+        <p className="font-bold text-2xl">Sales Growth</p>
         <div className="mt-5">
           <p className="font-serif">
             営業組織における<br></br>
@@ -15,7 +15,7 @@ const TopPage = () => {
           <p></p>
         </div>
         <div className="mt-3">
-          <p className="font-mono font-bold">@2024 Sales Growth</p>
+          <p className="font-bold">@2024 Sales Growth</p>
         </div>
       </div>
     </div>

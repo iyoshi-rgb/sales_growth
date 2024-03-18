@@ -16,7 +16,7 @@ async function getData(): Promise<Sales[]> {
     return redirect("/");
   }
 
-  let { data: sales, error }: any = await supabase
+  const { data: sales, error }: any = await supabase
     .from("sales")
     .select("*")
     .eq("email", user.email);
@@ -36,7 +36,7 @@ export default async function DemoPage() {
       <div className="w-full">
         <Nav />
       </div>
-      <p className="font-bold text-4xl pt-4 pl-6 font-mono">List</p>
+      <p className="font-bold text-4xl pt-4 pl-6">List</p>
       <div className="container mx-auto py-5 w-auto">
         <DataTable columns={columns} data={data} />
       </div>

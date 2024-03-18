@@ -25,46 +25,31 @@ import { Button } from "@/components/ui/button";
 
 import MemberAddForm from "./Member/MemberAddForm";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 
-interface Member {
-  id: number;
-  person: string;
-}
-
 interface MembersProps {
-  members: Member[] | null;
   org: string | undefined;
 }
 
-const Sample: React.FC<MembersProps> = ({ members, org }) => {
-  const [deleteId, setDeleteId] = useState<number | null>();
+const Sample: React.FC<MembersProps> = async ({ org }) => {
   const router = useRouter();
+  const supabase = createClient();
 
-  const handleDelete = (id: number) => {
-    setDeleteId(id);
+  const { data: member } = await supabase
+    .from("members")
+    .select("id, person")
+    .eq("org", org);
+
+  const handleDelete = async (id: number) => {
+    const { error } = await supabase.from("members").delete().eq("id", id);
+
+    if (!error) {
+      console.log("success");
+      router.push("/home");
+      router.refresh();
+    }
   };
-
-  useEffect(() => {
-    const deleteDB = async () => {
-      if (deleteId === null) return;
-      const supabase = createClient();
-      const { error } = await supabase
-        .from("members")
-        .delete()
-        .eq("id", deleteId);
-
-      if (!error) {
-        console.log("success");
-        setDeleteId(null);
-        router.push("/home");
-        router.refresh();
-      }
-    };
-    deleteDB();
-  }, [deleteId]);
 
   return (
     <div>
@@ -73,9 +58,9 @@ const Sample: React.FC<MembersProps> = ({ members, org }) => {
           <CardTitle>Your team Member</CardTitle>
         </CardHeader>
         <CardContent>
-          {members?.length ? (
+          {member?.length ? (
             <div className="grid grid-cols-2 gap-4">
-              {members.map((member) => (
+              {member.map((member) => (
                 <div
                   key={member.id}
                   className="flex items-center justify-center mb-3 mx-5"

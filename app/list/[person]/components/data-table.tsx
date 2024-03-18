@@ -86,7 +86,7 @@ export function DataTable<TData, TValue>({
     if (!auth) return;
 
     const getMember = async () => {
-      let { data: members, error } = await supabase
+      const { data: members, error } = await supabase
         .from("members")
         .select("id,person")
         .eq("org", auth);
