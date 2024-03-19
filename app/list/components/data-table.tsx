@@ -32,15 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import * as React from "react";
@@ -49,6 +41,7 @@ import { createClient } from "@/utils/supabase/client";
 import { Book } from "lucide-react";
 import { ClipboardPlus } from "lucide-react";
 import SerchList from "../components/data-table/SerchList";
+import AddModal from "./data-table/AddModal";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -137,29 +130,8 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
 
-        <Sheet>
-          <SheetTrigger asChild className="relative group">
-            <Button className="mx-5">
-              <ClipboardPlus />
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-                顧客の追加
-              </span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="bg-white">
-            <SheetHeader>
-              <SheetTitle>Add</SheetTitle>
-            </SheetHeader>
-            <div className="grid gap-4 py-4 bg-white">
-              <AddSale users={users} auth={auth} />
-            </div>
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button variant="outline">Close</Button>
-              </SheetClose>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
+        <AddModal users={users} auth={auth} />
+
         <Dialog>
           <DialogTrigger asChild className="relative group">
             <Button>

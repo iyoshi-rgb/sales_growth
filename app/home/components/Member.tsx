@@ -1,14 +1,5 @@
 "use client";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -19,14 +10,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Book, CircleUser, UserPlus, UserX } from "lucide-react";
+import { Book, CircleUser, UserX } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-import MemberAddForm from "./Member/MemberAddForm";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import MemberAddModal from "./Member/MemberAddModal";
 
 interface MembersProps {
   org: string | undefined;
@@ -117,28 +108,7 @@ const Sample: React.FC<MembersProps> = async ({ org }) => {
           )}
         </CardContent>
         <div className="text-center mb-2">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">
-                <UserPlus />
-                <span className="pl-2 font-bold">追加</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent className="bg-white">
-              <SheetHeader>
-                <SheetTitle>Add Member</SheetTitle>
-              </SheetHeader>
-              <div className="grid gap-4 py-4 bg-white">
-                <MemberAddForm org={org} />
-              </div>
-
-              <SheetFooter>
-                <SheetClose asChild>
-                  <Button variant="outline">Close</Button>
-                </SheetClose>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
+          <MemberAddModal org={org} />
         </div>
       </Card>
     </div>

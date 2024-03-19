@@ -68,11 +68,6 @@ const getPreMonthRecords = (records: Sales[]): Sales[] => {
   });
 };
 
-const getMember = (records: Sales[]): string[] => {
-  const memberSet = new Set(records.map((record) => record.person));
-  return Array.from(memberSet);
-};
-
 export default async function Home() {
   const supabase = createClient();
 
@@ -84,7 +79,7 @@ export default async function Home() {
     return redirect("/");
   }
 
-  let { data: sales, error } = await supabase
+  const { data: sales, error } = await supabase
     .from("sales")
     .select("created_at,person")
     .eq("email", user.email)
@@ -94,7 +89,7 @@ export default async function Home() {
     console.log(error);
   }
 
-  let { data: member } = await supabase
+  const { data: member } = await supabase
     .from("members")
     .select("id, person")
     .eq("org", user.email);
