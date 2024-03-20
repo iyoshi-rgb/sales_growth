@@ -36,10 +36,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import * as React from "react";
-import AddSale from "./data-table/AddSale";
 import { createClient } from "@/utils/supabase/client";
 import { Book } from "lucide-react";
-import { ClipboardPlus } from "lucide-react";
 import SerchList from "../components/data-table/SerchList";
 import AddModal from "./data-table/AddModal";
 
