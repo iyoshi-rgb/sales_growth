@@ -21,7 +21,7 @@ export default async function Home() {
     <>
       <Nav />
       <div className="flex flex-col min-h-screen">
-        <p className="font-bold text-4xl py-4 pl-6 ">Dashboard</p>
+        <p className="font-bold text-4xl py-4 pl-6 ">Home</p>
 
         <div className="flex flex-1">
           <div className="w-1/2 flex justify-center items-center">

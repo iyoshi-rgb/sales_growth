@@ -38,7 +38,7 @@ import { Input } from "@/components/ui/input";
 import * as React from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Book } from "lucide-react";
-import SerchList from "../components/data-table/SerchList";
+import SearchList from "./data-table/SearchList";
 import AddModal from "./data-table/AddModal";
 
 interface DataTableProps<TData, TValue> {
@@ -143,7 +143,7 @@ export function DataTable<TData, TValue>({
             <DialogHeader>
               <DialogTitle>誰のリストを見ますか？</DialogTitle>
             </DialogHeader>
-            <SerchList users={users} />
+            <SearchList users={users} />
           </DialogContent>
         </Dialog>
       </div>

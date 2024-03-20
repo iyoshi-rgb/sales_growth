@@ -37,7 +37,7 @@ import * as React from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Book } from "lucide-react";
 import { ClipboardPlus } from "lucide-react";
-import SerchList from "../../components/data-table/SerchList";
+import SearchList from "../../components/data-table/SearchList";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -150,7 +150,7 @@ export function DataTable<TData, TValue>({
             <DialogHeader>
               <DialogTitle>誰のリストを見ますか？</DialogTitle>
             </DialogHeader>
-            <SerchList users={users} />
+            <SearchList users={users} />
           </DialogContent>
         </Dialog>
       </div>

@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddList from "./columns/AddList";
 import EditModal from "./columns/EditModal";
+import Demo from "./columns/demo";
 
 export type Sales = {
   id: number;
@@ -137,75 +138,69 @@ export const columns: ColumnDef<Sales>[] = [
       const toggle = () => setIsToggle(!isToggle);
 
       return (
-        <>
-          <Button onClick={() => toggle()}>
-            <Menu />
-          </Button>
+        <div className="flex items-center">
+          <div className="flex flex-wrap ml-4 style={{width: '200px'}}">
+            <EditModal saleInfo={saleInfo} users={users} />
 
-          {isToggle && (
-            <>
-              <EditModal saleInfo={saleInfo} users={users} />
+            <AlertDialog>
+              <AlertDialogTrigger asChild className="relative group">
+                <Button>
+                  <Delete className="text-red-400" />
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs text-red-400 px-2">
+                    削除
+                  </span>
+                </Button>
+              </AlertDialogTrigger>
 
-              <AlertDialog>
-                <AlertDialogTrigger asChild className="relative group">
-                  <Button>
-                    <Delete className="text-red-400" />
-                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs text-red-400 px-2">
-                      削除
-                    </span>
-                  </Button>
-                </AlertDialogTrigger>
-
-                <AlertDialogContent className="bg-white">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>削除しますか？</AlertDialogTitle>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>
-                      <Button
-                        variant="outline"
-                        className="bg-black text-white"
-                        onClick={() => handleDelete(saleInfo.id)}
-                      >
-                        Continue
-                      </Button>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-              <Button
-                onClick={() => navigator.clipboard.writeText(saleInfo.phone)}
-                className="relative group"
-              >
-                <Phone />
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-                  Copy
-                </span>
-              </Button>
-              {!saleInfo.accept && (
-                <>
-                  <Dialog>
-                    <DialogTrigger asChild className="relative group">
-                      <Button>
-                        <BookPlus />
-                        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-                          リストに追加
-                        </span>
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-white">
-                      <DialogHeader>
-                        <DialogTitle>誰のリストに追加しますか？</DialogTitle>
-                      </DialogHeader>
-                      <AddList id={saleInfo.id} users={users} />
-                    </DialogContent>
-                  </Dialog>
-                </>
-              )}
-            </>
-          )}
-        </>
+              <AlertDialogContent className="bg-white">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>削除しますか？</AlertDialogTitle>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction>
+                    <Button
+                      variant="outline"
+                      className="bg-black text-white"
+                      onClick={() => handleDelete(saleInfo.id)}
+                    >
+                      Continue
+                    </Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <Button
+              onClick={() => navigator.clipboard.writeText(saleInfo.phone)}
+              className="relative group"
+            >
+              <Phone />
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+                Copy
+              </span>
+            </Button>
+            {!saleInfo.accept && (
+              <>
+                <Dialog>
+                  <DialogTrigger asChild className="relative group">
+                    <Button>
+                      <BookPlus />
+                      <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+                        リストに追加
+                      </span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-white">
+                    <DialogHeader>
+                      <DialogTitle>誰のリストに追加しますか？</DialogTitle>
+                    </DialogHeader>
+                    <AddList id={saleInfo.id} users={users} />
+                  </DialogContent>
+                </Dialog>
+              </>
+            )}
+          </div>
+        </div>
       );
     },
   },
