@@ -1,7 +1,8 @@
 <p>営業活動における、リストとメンバーの成績を見れるようにしたアプリケーションです。<p>
 
-<a href='https://sales-growth.vercel.app/'></a>
-<span>test@mail.com pass:test1111 で是非中身をのぞいてください。
+<a href="https://sales-growth.vercel.app/">https://sales-growth.vercel.app/</a>
+
+<span>mail:test@mail.com pass:test1111 で是非中身をのぞいてください。</span>
 <br>
 <img width="941" alt="スクリーンショット 2024-03-21 000406" src="https://github.com/iyoshi-rgb/sales_growth/assets/153269464/6885f041-50dd-436b-ab21-e07f460f220c">
 <br>
