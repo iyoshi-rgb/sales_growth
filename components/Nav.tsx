@@ -6,14 +6,10 @@ import Image from "next/image";
 
 const Nav = () => {
   return (
-    <div className="border-b border-b-gray-400">
-      <div className="font-mono flex items-center justify-start mb-3 mx-5 pt-2">
-        <Image src={"/icon.png"} alt="" width={40} height={40} />
-
+    <div className="border-b border-b-gray-400 ">
+      <div className=" flex items-center justify-start mb-3 mx-5 pt-2">
         <Link href={"/home"}>
-          <div className="text-xl font-semibold px-6 font-mono">
-            Sales Growth
-          </div>
+          <div className="text-xl font-semibold px-6 ">Sales Growth</div>
         </Link>
         <nav className="flex justify-between flex-grow ml-4">
           <ul className="flex space-x-4">

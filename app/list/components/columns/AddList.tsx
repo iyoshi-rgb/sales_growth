@@ -68,7 +68,12 @@ const AddList = ({ id, users }: Props) => {
             </option>
           ))}
         </select>
-        <Button variant={"outline"} type="submit">
+        <Button
+          variant={"outline"}
+          type="submit"
+          disabled={!isDirty || !isValid}
+          className="bg-black mt-4 text-white"
+        >
           追加
         </Button>
       </form>

@@ -62,7 +62,7 @@ const EditModal = ({ saleInfo, users }: any) => {
     <div>
       <Button onClick={() => Modal()} className="relative group">
         <FilePenLine />
-        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 text-xs  px-2">
           編集
         </span>
       </Button>
@@ -80,7 +80,7 @@ const EditModal = ({ saleInfo, users }: any) => {
               <h2 className="text-lg font-semibold">編集</h2>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex-1 flex flex-col w-full justify-center text-foreground"
+                className="flex-1 flex flex-col w-full justify-center text-foreground gap-2"
               >
                 <label className="text-md">client</label>
                 <input
@@ -117,9 +117,9 @@ const EditModal = ({ saleInfo, users }: any) => {
 
                 <Button
                   type="submit"
-                  variant="outline"
+                  variant="default"
                   disabled={!isDirty || !isValid}
-                  className="text-center"
+                  className="text-center mt-3 bg-black text-white"
                 >
                   保存
                 </Button>

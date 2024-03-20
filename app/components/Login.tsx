@@ -47,16 +47,14 @@ export default function Login() {
   };
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 ">
+      <div className="text-center text-lg font-bold py-3">
+        Create an Account/Login
+      </div>
 
-        <div className="text-center text-lg font-bold py-3">
-            Create an Account/Login
-        </div>
-
-        <div className="text-center text-gray-500 pb-2">
-            Enter your email bellow to create your account 
-        </div>
-
+      <div className="text-center text-gray-500 pb-2">
+        Enter your email bellow to create your account
+      </div>
 
       <form className="animate-in flex-1 flex flex-col w-full justify-center text-foreground">
         <label className="text-md" htmlFor="email">

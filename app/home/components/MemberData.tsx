@@ -118,7 +118,7 @@ const MemberData = async ({ current, org }: Props) => {
   });
 
   return (
-    <Card className="w-[280px]">
+    <Card className="w-[280px] border-gray-400">
       <CardHeader>
         <CardTitle>
           <span>{current ? `${thisYearMonth}` : `${preYearMonth}`}</span>

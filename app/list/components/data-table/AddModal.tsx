@@ -94,7 +94,7 @@ const AddModal = ({ users, auth }: Props) => {
               <h2 className="text-lg font-semibold">追加</h2>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex-1 flex flex-col w-full justify-center text-foreground gap-3"
+                className="flex-1 flex flex-col w-full justify-center text-foreground gap-2"
               >
                 <label className="text-md">client</label>
                 <input
@@ -130,7 +130,12 @@ const AddModal = ({ users, auth }: Props) => {
                   <option value="アポ取得">アポ取得</option>
                   <option value="不在">不在</option>
                 </select>
-                <Button variant={"outline"} type="submit">
+                <Button
+                  variant={"default"}
+                  type="submit"
+                  disabled={!isDirty || !isValid}
+                  className="bg-black text-white"
+                >
                   追加
                 </Button>
               </form>

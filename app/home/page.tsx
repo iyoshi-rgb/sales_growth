@@ -33,13 +33,14 @@ export default async function Home() {
           <div className="w-1/2 flex flex-col">
             <div className="flex-1 flex items-center justify-center">
               <div className="flex items-center justify-between mx-3 my-3 gap-4">
-                <DataCard org={user.email} />
+                <MemberData current={false} org={user.email} />
+                <MemberData current={true} org={user.email} />
               </div>
             </div>
             <div className="flex-1 flex justify-center items-center">
               <div className="flex items-center justify-center mx-3 my-3 gap-3">
-                <MemberData current={false} org={user.email} />
-                <MemberData current={true} org={user.email} />
+                <DataCard current={false} org={user.email} />
+                <DataCard current={true} org={user.email} />
               </div>
             </div>
           </div>

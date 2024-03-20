@@ -69,7 +69,11 @@ const MemberAddModal = ({ org }: any) => {
                   className="rounded-md px-4 py-2 bg-inherit border mb-3"
                   {...register("memberName", { required: "入力してください" })}
                 />
-                <Button type="submit" className="text-white bg-black w-auto">
+                <Button
+                  type="submit"
+                  className="text-white bg-black w-auto mt-4"
+                  disabled={!isDirty || !isValid}
+                >
                   <CircleUser className="mr-3" />
                   追加
                 </Button>

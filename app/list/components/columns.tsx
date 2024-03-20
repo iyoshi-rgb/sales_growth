@@ -146,7 +146,7 @@ export const columns: ColumnDef<Sales>[] = [
               <AlertDialogTrigger asChild className="relative group">
                 <Button>
                   <Delete className="text-red-400" />
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs text-red-400 px-2">
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 text-xs text-red-400 px-2">
                     削除
                   </span>
                 </Button>
@@ -175,7 +175,7 @@ export const columns: ColumnDef<Sales>[] = [
               className="relative group"
             >
               <Phone />
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100  px-2">
                 Copy
               </span>
             </Button>
@@ -185,7 +185,7 @@ export const columns: ColumnDef<Sales>[] = [
                   <DialogTrigger asChild className="relative group">
                     <Button>
                       <BookPlus />
-                      <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+                      <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 text-xs  px-2">
                         リストに追加
                       </span>
                     </Button>

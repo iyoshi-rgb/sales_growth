@@ -52,7 +52,12 @@ const SearchList = ({ users }: Props) => {
             </option>
           ))}
         </select>
-        <Button variant={"outline"} type="submit">
+        <Button
+          variant={"default"}
+          type="submit"
+          className="mt-4 bg-black text-white"
+          disabled={!isDirty || !isValid}
+        >
           選ぶ
         </Button>
       </form>

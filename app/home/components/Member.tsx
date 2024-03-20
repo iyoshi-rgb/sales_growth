@@ -32,8 +32,12 @@ const Sample: React.FC<MembersProps> = async ({ org }) => {
     .select("id, person")
     .eq("org", org);
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number, person: string) => {
     const { error } = await supabase.from("members").delete().eq("id", id);
+    const { data } = await supabase
+      .from("sales")
+      .update({ accept: false })
+      .eq("list", person);
 
     if (!error) {
       console.log("success");
@@ -44,7 +48,7 @@ const Sample: React.FC<MembersProps> = async ({ org }) => {
 
   return (
     <div>
-      <Card>
+      <Card className=" border-gray-400">
         <CardHeader>
           <CardTitle>Your team Member</CardTitle>
         </CardHeader>
@@ -64,7 +68,7 @@ const Sample: React.FC<MembersProps> = async ({ org }) => {
                     <Link href={`/list/${member.person}`}>
                       <Button>
                         <Book />
-                        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
+                        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 text-xs  px-2">
                           {member.person}のリスト
                         </span>
                       </Button>
@@ -75,7 +79,7 @@ const Sample: React.FC<MembersProps> = async ({ org }) => {
                       <AlertDialogTrigger asChild className="relative group">
                         <Button>
                           <UserX className="text-red-400" />
-                          <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white  text-red-400 text-xs  px-2">
+                          <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100  text-red-400 text-xs  px-2">
                             削除
                           </span>
                         </Button>
@@ -91,7 +95,9 @@ const Sample: React.FC<MembersProps> = async ({ org }) => {
                             <Button
                               variant="outline"
                               className="bg-black text-white"
-                              onClick={() => handleDelete(member.id)}
+                              onClick={() =>
+                                handleDelete(member.id, member.person)
+                              }
                             >
                               削除
                             </Button>
