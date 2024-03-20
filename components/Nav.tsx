@@ -1,7 +1,6 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { SettingsMenu } from "./SettingsMenu";
 import AuthButton from "./AuthButton";
 
 const Nav = () => {
