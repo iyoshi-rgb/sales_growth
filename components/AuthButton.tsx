@@ -19,9 +19,12 @@ export default async function AuthButton() {
   };
 
   return user ? (
-    <div className="flex items-center gap-4">
+    <div className="">
       <form action={signOut}>
-        <Button className="rounded-md bg-black text-gray-300 hover:text-white">
+        <Button
+          variant={"destructive"}
+          className="rounded-md  hover:text-white"
+        >
           Logout
         </Button>
       </form>

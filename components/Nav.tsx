@@ -1,33 +1,42 @@
 import Link from "next/link";
 import React from "react";
-import { Button } from "@/components/ui/button";
 import AuthButton from "./AuthButton";
 import Image from "next/image";
+import Logo from "@/app/logo.png";
+import { createClient } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
 
-const Nav = () => {
+const Nav = async ({ org }: any) => {
+  const supabase = createClient();
+
+  const { data: member } = await supabase
+    .from("members")
+    .select("id, person")
+    .eq("org", org);
+
+  console.log(member);
+
   return (
-    <div className="border-b border-b-gray-400 ">
-      <div className=" flex items-center justify-start mb-3 mx-5 pt-2">
-        <Link href={"/home"}>
-          <div className="text-xl font-semibold px-6 ">Sales Growth</div>
+    <div className="flex flex-col justify-between min-h-screen w-1/10 bg-gray-300 text-cyan-900">
+      <div>
+        <Link href="/home">
+          <Image src={Logo} alt="" width={180} height={200} className="mt-3" />
         </Link>
-        <nav className="flex justify-between flex-grow ml-4">
-          <ul className="flex space-x-4">
-            <Link href={"/home"}>
-              <li>
-                <Button className="text-gray-600 hover:text-black">Home</Button>
-              </li>
+        <nav className="mt-4">
+          <ul className="flex flex-col space-y-2">
+            <Link href="/home">
+              <li className="hover:text-white block px-6 py-2">Home</li>
             </Link>
-            <Link href={"/list"}>
-              <li>
-                <Button className="text-gray-600 hover:text-black">List</Button>
-              </li>
+
+            <Link href="/list">
+              <li className="hover:text-white block px-6 py-2">List</li>
             </Link>
           </ul>
         </nav>
-        <div className="flex items-center gap-3">
-          <AuthButton />
-        </div>
+      </div>
+
+      <div className="px-2 mb-4">
+        <AuthButton />
       </div>
     </div>
   );
