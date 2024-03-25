@@ -1,7 +1,8 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { UserPlus } from "lucide-react";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
@@ -44,13 +45,15 @@ const MemberAddModal = ({ org }: any) => {
     }
   };
 
-  const Modal = () => setIsModal(!isModal);
+  const Modal = () => {
+    setIsModal(!isModal);
+    console.log(isModal);
+  };
 
   return (
     <div>
-      <Button variant="outline" onClick={() => Modal()}>
+      <Button variant="ghost" onClick={() => Modal()}>
         <UserPlus />
-        <span className="pl-2 font-bold">追加</span>
       </Button>
 
       {isModal && (

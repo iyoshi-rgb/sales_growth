@@ -38,20 +38,13 @@ export default async function DemoPage() {
   return (
     <>
       <div className="flex min-h-screen">
-        {/* サイドナビゲーション */}
         <Nav org={user?.email} />
 
-        {/* メインコンテンツ */}
         <div className="flex-1 ml-3">
-          {" "}
-          {/* `Nav`の幅に応じてmarginLeftを調整 */}
-          {/* ページタイトル */}
           <p className="font-bold text-4xl pt-4 pl-6">List</p>
-          {/* データテーブルコンテナ */}
           <div className="container mx-auto py-5 w-auto flex flex-col">
             <DataTable columns={columns} data={data} />
           </div>
-          {/* フッター */}
         </div>
       </div>
     </>

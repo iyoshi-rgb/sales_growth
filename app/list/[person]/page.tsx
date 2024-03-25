@@ -6,7 +6,8 @@ import Nav from "@/components/Nav";
 import { Sales } from "../components/columns";
 import { redirect } from "next/navigation";
 
-async function getData(name: string): Promise<Sales[]> {
+{
+  /*async function getData(name: string): Promise<Sales[]> {
   const supabase = createClient();
 
   const {
@@ -28,19 +29,43 @@ async function getData(name: string): Promise<Sales[]> {
   }
 
   return sales;
+}*/
 }
 
 const page = async ({ params }: { params: { person: string } }) => {
   const name = decodeURIComponent(params.person);
 
-  const data = await getData(name);
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/");
+  }
+
+  const { data: sales, error }: any = await supabase
+    .from("sales")
+    .select("*")
+    .eq("email", user.email)
+    .eq("list", name);
+
+  if (error) {
+    console.log(error);
+  }
+
+  //const data = await getData(name);
 
   return (
-    <div>
-      <Nav />
-      <p className="font-bold text-2xl pt-6 pl-6 font-mono">{name}のList</p>
-      <div className="container mx-auto py-5 w-auto">
-        <DataTable columns={columns} data={data} />
+    <div className="flex min-h-screen">
+      <Nav org={user.email} />
+
+      <div className="flex-1 ml-3">
+        <p className="font-bold text-4xl pt-4 pl-6">{name}のList</p>
+        <div className="container mx-auto py-5 w-auto flex flex-col">
+          <DataTable columns={columns} data={sales} />
+        </div>
       </div>
     </div>
   );

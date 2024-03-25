@@ -1,9 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Phone } from "lucide-react";
+import { ArrowUpDown, Delete, Phone, BookX } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
 
 import {
   AlertDialog,
@@ -18,7 +17,6 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { BookX } from "lucide-react";
 import EditModal from "../../components/columns/EditModal";
 
 export type Sales = {
@@ -72,10 +70,11 @@ export const columns: ColumnDef<Sales>[] = [
       const router = useRouter();
       const supabase = createClient();
 
-      const [deleteId, setId] = useState<number | null>(null);
+      const [deleteId, setDeleteId] = useState<number | null>(null);
+      const [deleteListId, setDeleteListId] = useState<number | null>(null);
+
       const [users, setUsers] = useState<any>();
       const [auth, setAuth] = useState<string | null>();
-      const [isOpen, setIsOpen] = useState<boolean>(false);
 
       useEffect(() => {
         const getUser = async () => {
@@ -106,24 +105,22 @@ export const columns: ColumnDef<Sales>[] = [
       }, [auth]);
 
       const handleDelete = (id: number) => {
-        setId(id);
+        setDeleteId(id);
       };
 
       useEffect(() => {
         const deleteDB = async () => {
           if (deleteId === null) return;
-
-          const { data, error } = await supabase
+          const { error } = await supabase
             .from("sales")
-            .update({ accept: false, list: null })
-            .eq("id", deleteId)
-            .select();
+            .delete()
+            .eq("id", deleteId);
 
           if (error) {
             console.log(error);
           } else {
             console.log("success");
-            setId(null);
+            setDeleteId(null);
             router.refresh();
           }
         };
@@ -131,61 +128,109 @@ export const columns: ColumnDef<Sales>[] = [
         deleteDB();
       }, [deleteId]);
 
-      const toggleMenu = () => setIsOpen(!isOpen);
+      const handleListDelete = (id: number) => {
+        setDeleteListId(id);
+      };
+
+      useEffect(() => {
+        const deleteListDB = async () => {
+          if (deleteListId === null) return;
+
+          console.log(deleteListId);
+
+          const { data, error } = await supabase
+            .from("sales")
+            .update({ accept: false, list: null })
+            .eq("id", deleteListId)
+            .select();
+
+          if (error) {
+            console.log(error);
+          } else {
+            setDeleteListId(null);
+            router.refresh();
+          }
+        };
+
+        deleteListDB();
+      }, [deleteListId]);
 
       return (
-        <>
-          <Button onClick={() => toggleMenu()}>
-            <Menu />
-          </Button>
+        <div>
+          <div className="flex items-center">
+            <div className="flex flex-wrap ml-4 style={{width: '200px'}}">
+              <EditModal saleInfo={saleInfo} users={users} />
 
-          {isOpen && (
-            <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-              <div className="py-1">
-                <EditModal saleInfo={saleInfo} users={users} />
+              <AlertDialog>
+                <AlertDialogTrigger asChild className="relative group">
+                  <Button>
+                    <Delete className="text-red-400" />
+                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 text-xs text-red-400 px-2">
+                      削除
+                    </span>
+                  </Button>
+                </AlertDialogTrigger>
 
-                <Button
-                  onClick={() => navigator.clipboard.writeText(saleInfo.phone)}
-                  className="relative group"
-                >
-                  <Phone />
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-                    Copy
-                  </span>
-                </Button>
+                <AlertDialogContent className="bg-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>削除しますか？</AlertDialogTitle>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction>
+                      <Button
+                        variant="outline"
+                        className="bg-black text-white"
+                        onClick={() => handleDelete(saleInfo.id)}
+                      >
+                        Continue
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              <Button
+                onClick={() => navigator.clipboard.writeText(saleInfo.phone)}
+                className="relative group"
+              >
+                <Phone />
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100  px-2 text-xs">
+                  Copy
+                </span>
+              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild className="relative group">
+                  <Button>
+                    <BookX className="text-red-400" />
+                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 text-xs text-red-400 px-2">
+                      リストから消す
+                    </span>
+                  </Button>
+                </AlertDialogTrigger>
 
-                <AlertDialog>
-                  <AlertDialogTrigger asChild className="relative group">
-                    <Button>
-                      <BookX className="text-red-400" />
-                      <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs text-red-400 px-2">
-                        削除
-                      </span>
-                    </Button>
-                  </AlertDialogTrigger>
-
-                  <AlertDialogContent className="bg-white">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>削除しますか？</AlertDialogTitle>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction>
-                        <Button
-                          variant="outline"
-                          className="bg-black text-white"
-                          onClick={() => handleDelete(saleInfo.id)}
-                        >
-                          Continue
-                        </Button>
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
+                <AlertDialogContent className="bg-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      リストから削除しますか？
+                    </AlertDialogTitle>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction>
+                      <Button
+                        variant="outline"
+                        className="bg-black text-white"
+                        onClick={() => handleListDelete(saleInfo.id)}
+                      >
+                        Continue
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
-          )}
-        </>
+          </div>
+        </div>
       );
     },
   },

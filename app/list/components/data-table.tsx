@@ -16,15 +16,6 @@ import {
 } from "@tanstack/react-table";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import {
   Table,
   TableBody,
   TableCell,
@@ -37,8 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import * as React from "react";
 import { createClient } from "@/utils/supabase/client";
-import { Book } from "lucide-react";
-import SearchList from "./data-table/SearchList";
+
 import AddModal from "./data-table/AddModal";
 
 interface DataTableProps<TData, TValue> {
@@ -129,23 +119,6 @@ export function DataTable<TData, TValue>({
         />
 
         <AddModal users={users} auth={auth} />
-
-        <Dialog>
-          <DialogTrigger asChild className="relative group">
-            <Button>
-              <Book />
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-                リスト一覧
-              </span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-white">
-            <DialogHeader>
-              <DialogTitle>誰のリストを見ますか？</DialogTitle>
-            </DialogHeader>
-            <SearchList users={users} />
-          </DialogContent>
-        </Dialog>
       </div>
       <div className="rounded-md border">
         <Table>

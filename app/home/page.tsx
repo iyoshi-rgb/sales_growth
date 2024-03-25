@@ -20,7 +20,9 @@ export default async function Home() {
       <div className="flex min-h-screen">
         <Nav org={user.email} />
         <div className="flex-1 flex flex-col ">
-          <p className="font-bold text-4xl py-4 pl-6">Home</p>
+          <div className="">
+            <p className="font-bold text-4xl py-4 pl-6">Home</p>
+          </div>
           <div className="flex flex-1">
             {/*<div className="w-1/2 flex justify-center items-center">
               <div className="mx-5 my-3">

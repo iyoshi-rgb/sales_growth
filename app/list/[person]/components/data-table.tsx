@@ -35,9 +35,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import * as React from "react";
 import { createClient } from "@/utils/supabase/client";
-import { Book } from "lucide-react";
-import { ClipboardPlus } from "lucide-react";
-import SearchList from "../../components/data-table/SearchList";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -130,29 +127,12 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
 
-        <Button className="mx-5 relative group" onClick={() => handleClick()}>
+        {/*<Button className="mx-5 relative group" onClick={() => handleClick()}>
           <ClipboardPlus />
           <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
             顧客の追加
           </span>
-        </Button>
-
-        <Dialog>
-          <DialogTrigger asChild className="relative group">
-            <Button>
-              <Book />
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-                リスト一覧
-              </span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-white">
-            <DialogHeader>
-              <DialogTitle>誰のリストを見ますか？</DialogTitle>
-            </DialogHeader>
-            <SearchList users={users} />
-          </DialogContent>
-        </Dialog>
+        </Button>*/}
       </div>
       <div className="rounded-md border">
         <Table>
