@@ -22,8 +22,8 @@ export default async function AuthButton() {
     <div className="">
       <form action={signOut}>
         <Button
-          variant={"destructive"}
-          className="rounded-md  hover:text-white"
+          variant={"default"}
+          className="rounded-md bg-cyan-700 text-white hover:bg-cyan-900"
         >
           Logout
         </Button>

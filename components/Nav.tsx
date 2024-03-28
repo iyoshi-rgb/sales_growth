@@ -45,10 +45,6 @@ const Nav = async ({ org }: any) => {
           </ul>
         </nav>
       </div>
-
-      <div className="px-2 mb-4">
-        <AuthButton />
-      </div>
     </div>
   );
 };

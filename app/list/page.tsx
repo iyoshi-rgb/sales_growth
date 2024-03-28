@@ -3,6 +3,7 @@ import { DataTable } from "./components/data-table";
 import { createClient } from "@/utils/supabase/server";
 import Nav from "../../components/Nav";
 import { redirect } from "next/navigation";
+import Header from "@/components/Header";
 
 async function getData(): Promise<Sales[]> {
   const supabase = createClient();
@@ -41,7 +42,7 @@ export default async function DemoPage() {
         <Nav org={user?.email} />
 
         <div className="flex-1 ml-3">
-          <p className="font-bold text-4xl pt-4 pl-6">List</p>
+          <Header title="List" />
           <div className="container mx-auto py-5 w-auto flex flex-col">
             <DataTable columns={columns} data={data} />
           </div>

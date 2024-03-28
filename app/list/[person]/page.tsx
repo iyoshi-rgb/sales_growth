@@ -5,6 +5,7 @@ import React from "react";
 import Nav from "@/components/Nav";
 import { Sales } from "../components/columns";
 import { redirect } from "next/navigation";
+import Header from "@/components/Header";
 
 {
   /*async function getData(name: string): Promise<Sales[]> {
@@ -62,7 +63,7 @@ const page = async ({ params }: { params: { person: string } }) => {
       <Nav org={user.email} />
 
       <div className="flex-1 ml-3">
-        <p className="font-bold text-4xl pt-4 pl-6">{name}のList</p>
+        <Header title={`${name}のList`} />
         <div className="container mx-auto py-5 w-auto flex flex-col">
           <DataTable columns={columns} data={sales} />
         </div>
