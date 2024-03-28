@@ -25,7 +25,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddList from "./columns/AddList";
 import EditModal from "./columns/EditModal";
-import Demo from "./columns/demo";
 
 export type Sales = {
   id: number;

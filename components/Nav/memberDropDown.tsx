@@ -40,22 +40,32 @@ const MemberDropDown = ({ members, org }: any) => {
   return (
     <div>
       <li
-        className="block px-6 py-2  hover:text-white"
+        className="block px-2   hover:text-white"
         onClick={() => setDropDown(!dropDown)}
       >
-        <span className="cursor-pointer">Member</span>
-        {dropDown && (
-          <div className="bg-gray-300 text-cyan-900 mt-1">
-            {members.map((member: any) => (
-              <div
-                key={member.id}
-                className="flex items-center justify-between px-4 py-2"
-              >
-                {member.person}
-              </div>
-            ))}
-          </div>
-        )}
+        <AlertDialog>
+          <AlertDialogTrigger asChild className="relative group">
+            <Button>
+              <span style={{ fontWeight: "16px" }} className="font-normal">
+                Member
+              </span>
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent className="bg-white">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Member</AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>やめる</AlertDialogCancel>
+              <AlertDialogAction>
+                <Button variant="outline" className="bg-black text-white">
+                  削除
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </li>
     </div>
   );
