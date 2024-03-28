@@ -117,33 +117,30 @@ const MemberData = async ({ current, org }: Props) => {
     };
   });
 
+  console.log(preData);
+  console.log(thisData);
+
+  const dataToShow = current ? thisData : preData;
+
   return (
-    <Card className="w-[280px] border-gray-400">
-      <CardHeader>
-        <CardTitle>
-          <span>{current ? `${thisYearMonth}` : `${preYearMonth}`}</span>
-        </CardTitle>
-        <CardDescription></CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-4">
-          {(current ? thisData : preData)?.map((dataItem) => (
+    <div className="space-y-2 p-4">
+      <div className="flex items-end justify-start space-x-2 p-4 h-64">
+        {dataToShow?.map((item) => (
+          <div key={item.id} className="text-center">
             <div
-              key={dataItem.id}
-              className="flex items-center justify-center mb-3"
+              className="bg-black"
+              style={{
+                height: `${item.count * 100}%`,
+                width: "20px",
+              }}
             >
-              <CircleUser className="flex-shrink-0" />
-              <div className="flex flex-grow ">
-                <div className="pl-2">{dataItem.person}</div>
-              </div>
-              <div className="flex flex-grow">
-                <div className="">{dataItem.count}件</div>
-              </div>
+              <span className="text-xs text-white">{item.count}</span>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            <div className="text-xs w-20 mt-1">{item.person}</div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

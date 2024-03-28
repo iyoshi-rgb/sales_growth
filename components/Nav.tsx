@@ -15,8 +15,6 @@ const Nav = async ({ org }: any) => {
     .select("id, person")
     .eq("org", org);
 
-  console.log(members);
-
   return (
     <div className="flex flex-col justify-between min-h-screen w-1/10 bg-gray-300 text-cyan-900">
       <div>
