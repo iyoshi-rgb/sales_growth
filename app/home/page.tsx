@@ -3,6 +3,17 @@ import { redirect } from "next/navigation";
 import Nav from "../../components/Nav";
 import { DataCard } from "./components/DataCard";
 import MemberData from "./components/MemberData";
+import MemberAddModal from "./components/Member/MemberAddModal";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { BookPlus } from "lucide-react";
+import Delete from "./components/Delete";
 
 export default async function Home() {
   const supabase = createClient();
@@ -20,8 +31,11 @@ export default async function Home() {
       <div className="flex min-h-screen">
         <Nav org={user.email} />
         <div className="flex-1 flex flex-col ">
-          <div className="">
+          <div className="flex justify-between items-center">
             <p className="font-bold text-4xl py-4 pl-6">Home</p>
+            <div>
+              <MemberAddModal org={user.email} />
+            </div>
           </div>
           <div className="flex flex-1">
             {/*<div className="w-1/2 flex justify-center items-center">
