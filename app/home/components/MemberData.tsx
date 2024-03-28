@@ -1,14 +1,8 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-import { CircleUser } from "lucide-react";
+//"use client";
+import * as React from "react";
 import { createClient } from "@/utils/supabase/client";
+import { BarChart } from "@mui/x-charts/BarChart";
+import Demo from "./Demo";
 
 interface Sales {
   created_at: string;
@@ -16,7 +10,6 @@ interface Sales {
 }
 
 interface Props {
-  current: boolean;
   org: string | undefined;
 }
 
@@ -43,7 +36,7 @@ const countPersonByMonth = (groupedRecords: Record<string, Sales[]>) => {
   }, {} as Record<string, Record<string, number>>);
 };
 
-const MemberData = async ({ current, org }: Props) => {
+const MemberData = async ({ org }: Props) => {
   const supabase = createClient();
 
   const { data: sales, error } = await supabase
@@ -117,30 +110,11 @@ const MemberData = async ({ current, org }: Props) => {
     };
   });
 
-  console.log(preData);
-  console.log(thisData);
-
-  const dataToShow = current ? thisData : preData;
-
   return (
-    <div className="space-y-2 p-4">
-      <div className="flex items-end justify-start space-x-2 p-4 h-64">
-        {dataToShow?.map((item) => (
-          <div key={item.id} className="text-center">
-            <div
-              className="bg-black"
-              style={{
-                height: `${item.count * 100}%`,
-                width: "20px",
-              }}
-            >
-              <span className="text-xs text-white">{item.count}</span>
-            </div>
-            <div className="text-xs w-20 mt-1">{item.person}</div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <>
+      <Demo data={preData} />
+      <Demo data={thisData} />
+    </>
   );
 };
 

@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import MemberAddModal from "./Member/MemberAddModal";
+import MemberAddModal from "../../../components/Nav/MemberAddModal";
 
 interface MembersProps {
   org: string | undefined;
