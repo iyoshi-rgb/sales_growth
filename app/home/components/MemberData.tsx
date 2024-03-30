@@ -1,8 +1,5 @@
-//"use client";
-import * as React from "react";
 import { createClient } from "@/utils/supabase/client";
-import { BarChart } from "@mui/x-charts/BarChart";
-import BarData from "./BarData";
+import BarData from "./MemberData/BarData";
 
 interface Sales {
   created_at: string;
@@ -112,8 +109,20 @@ const MemberData = async ({ org }: Props) => {
 
   return (
     <>
-      <BarData time={preYearMonth} data={preData} />
-      <BarData time={thisYearMonth} data={thisData} />
+      {preData?.length ? (
+        <>
+          <BarData time={preYearMonth} data={preData} />
+        </>
+      ) : (
+        <div></div>
+      )}
+      {thisData?.length ? (
+        <>
+          <BarData time={thisYearMonth} data={thisData} />
+        </>
+      ) : (
+        <div></div>
+      )}
     </>
   );
 };

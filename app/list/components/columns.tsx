@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { BookPlus, ArrowUpDown, Delete, Phone, Menu } from "lucide-react";
+import { BookPlus, ArrowUpDown, Delete, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -80,7 +80,6 @@ export const columns: ColumnDef<Sales>[] = [
       const [deleteId, setId] = useState<number | null>(null);
       const [users, setUsers] = useState<any>();
       const [auth, setAuth] = useState<string | null>();
-      const [isToggle, setIsToggle] = useState<boolean>(false);
 
       useEffect(() => {
         const getUser = async () => {

@@ -9,7 +9,6 @@ import {
 
 import { createClient } from "@/utils/supabase/client";
 import { CircleUser } from "lucide-react";
-import { Activity } from "lucide-react";
 
 interface Props {
   org: string | undefined;

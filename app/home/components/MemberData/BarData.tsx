@@ -8,12 +8,12 @@ interface Sales {
   count: number;
 }
 
-interface DemoProps {
+interface Props {
   time: string;
   data?: Sales[];
 }
 
-const BarData = ({ time, data }: DemoProps) => {
+const BarData = ({ time, data }: Props) => {
   return (
     <>
       <>{time}</>

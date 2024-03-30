@@ -23,16 +23,8 @@ export default async function Home() {
         <div className="flex-1 flex flex-col ">
           <Header title={"Home"} />
           <div className="flex flex-1">
-            {/*<div className="w-1/2 flex justify-center items-center">
-              <div className="mx-5 my-3">
-                <Member org={user.email} />
-              </div>
-  </div>*/}
-
             <div className="flex flex-1 justify-center items-center">
-              {/* コンテンツコンテナ */}
               <div className="w-full max-w-4xl flex flex-col items-center justify-center">
-                {/* MemberDataとDataCardのセクション */}
                 <div className="flex w-full justify-around mb-8">
                   <MemberData org={user.email} />
                 </div>
