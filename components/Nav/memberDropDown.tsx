@@ -18,7 +18,6 @@ import { UserX } from "lucide-react";
 import MemberAddModal from "@/components/Nav/MemberAddModal";
 
 const MemberDropDown = ({ members, org }: any) => {
-  const [dropDown, setDropDown] = useState<boolean>(false);
   const router = useRouter();
   const supabase = createClient();
 
@@ -30,7 +29,6 @@ const MemberDropDown = ({ members, org }: any) => {
       .eq("list", person);
 
     if (!error) {
-      setModal(!Modal);
       router.refresh();
     } else {
       console.log(error);

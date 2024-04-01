@@ -104,7 +104,7 @@ export async function DataCard({ org, current }: Props) {
   const month = now.getMonth() + 1;
   const premonth = month - 1;
 
-  const preReport = calculateAppointment(Sales, Member, year, premonth); // For February
+  const preReport = calculateAppointment(Sales, Member, year, premonth);
   const Report = calculateAppointment(Sales, Member, year, month);
 
   return (

@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
 import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -37,17 +36,10 @@ const MemberAddModal = ({ org }: any) => {
       .insert([{ person: value.memberName, org: org }])
       .select();
     if (data) {
-      router.push("/home");
       router.refresh();
-      setIsModal(!isModal);
     } else {
       console.log(error);
     }
-  };
-
-  const Modal = () => {
-    setIsModal(!isModal);
-    console.log(isModal);
   };
 
   return (

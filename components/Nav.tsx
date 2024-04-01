@@ -1,23 +1,10 @@
 import Link from "next/link";
 import React from "react";
-import AuthButton from "./AuthButton";
 import Image from "next/image";
 import Logo from "@/app/logo.png";
 import { createClient } from "@/utils/supabase/client";
 import MemberDropDown from "./Nav/memberDropDown";
 import ListDropDown from "./Nav/ListDropDown";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "./ui/button";
-import { X } from "lucide-react";
 
 const Nav = async ({ org }: any) => {
   const supabase = createClient();

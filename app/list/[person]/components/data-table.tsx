@@ -16,14 +16,6 @@ import {
 } from "@tanstack/react-table";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import {
   Table,
   TableBody,
   TableCell,
@@ -50,7 +42,6 @@ export function DataTable<TData, TValue>({
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [users, setUsers] = useState<any>();
   const [auth, setAuth] = useState<string | null>();
 
   const supabase = createClient();
@@ -78,7 +69,6 @@ export function DataTable<TData, TValue>({
       if (error) {
         return error;
       }
-      setUsers(members);
     };
 
     getMember();
@@ -126,13 +116,6 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-
-        {/*<Button className="mx-5 relative group" onClick={() => handleClick()}>
-          <ClipboardPlus />
-          <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100 bg-white text-xs  px-2">
-            顧客の追加
-          </span>
-        </Button>*/}
       </div>
       <div className="rounded-md border">
         <Table>
