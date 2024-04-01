@@ -2,9 +2,13 @@
 
 <p><b>機能：</b><br>ログイン＆ログアウト、memberの追加、営業リストの追加・編集・削除、各メンバーがListをKeepできる、今月と先月のデータ（各メンバーのアポ取得数・アポ取得率）の表示</p>
 
-<a href="https://sales-growth.vercel.app/">https://sales-growth.vercel.app/</a>
+## サービスの URL
 
-<span>mail:test@mail.com pass:test1111 で是非中身をのぞいてください。</span>
+https://sales-growth.vercel.app/
+
+mail: test@mail.com
+pass: test1111
+でぜひ中身をのぞいてください。
 <br>
 <img width="941" alt="スクリーンショット 2024-03-21 000406" src="https://github.com/iyoshi-rgb/sales_growth/assets/153269464/6885f041-50dd-436b-ab21-e07f460f220c">
 <br>
