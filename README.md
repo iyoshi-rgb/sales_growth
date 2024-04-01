@@ -24,13 +24,26 @@ pass: test1111<br/>
 
 ## 機能一覧
 
+## 使用技術
+
+| Category       | Technology Stack                                   |
+| -------------- | -------------------------------------------------- |
+| Frontend       | TypeScript, Next.js , shadcn/ui, MUI(棒グラフのみ) |
+|  |
+| Backend        | Supabase                                           |
+| Infrastructure | Vercel                                             |
+| Database       | Supabase                                           |
+| Design         | Lucid                                              |
+| etc.           | Stylelint, ESLint, Prettier,Git, GitHub            |
+
 ## 挑戦&苦労&GoodPoint
 
-- 初めて、Next.js と Baas(supabase)を使用したこと
+- 挑戦：初めて、Next.js と BaaS(Supabase)を使用したこと
 
 - 苦労：データをフェッチする場所。CSR と SSR の使い分け
 
-- よかったこと:以前作成した、React アプリケーションより、Component 設計が理解できたかつ、効率的に UI 設計できた。<br/>
+- よかったこと：以前作成した、React アプリケーションより、Component 設計が理解できたかつ、効率的に UI 設計できた。
+  <br/><br/>
   実際に長期インターン先に、アプリケーションを見せに行き、何の機能が欲しいかをヒアリング＆実装できた。（Member の List 機能）
 
 ## 今後の展望(サービス＆個人)
@@ -42,7 +55,5 @@ pass: test1111<br/>
 - Member を削除すると、削除された Member が取得したアポイントメントデータも消されてしまうので残るようにする。（追加パターンも）
 - 取得数を表す棒グラフの縦軸が、データの最大値によって変化しているので、固定にする
 - layout.tsx の活用
-
-<p><b>使用技術：</b>Next.js,supabase</p>
 
 <p><b>機能：</b><br>ログイン＆ログアウト、memberの追加、営業リストの追加・編集・削除、各メンバーがListをKeepできる、今月と先月のデータ（各メンバーのアポ取得数・アポ取得率）の表示</p>
