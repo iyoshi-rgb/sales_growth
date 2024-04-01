@@ -6,10 +6,16 @@
 
 https://sales-growth.vercel.app/
 
-mail: test@mail.com
-pass: test1111
+mail: test@mail.com<br/>
+pass: test1111<br/>
 でぜひ中身をのぞいてください。
-<br>
+<br />
+
+##サービスへの想い(作成の背景)
+
+私は現在、長期インターンシップで、法人営業を行っています。
+私たち、インターン生の成長と組織全体の成績の把握のために、営業成績の計算を行うのですが、スプレッドシートのデータを名前・結果・日にち等で何回ももフィルタリングし、手動で計算していたので、List に入力すれば、自動で各個人のデータを出すことはできないかなと思い、作成しました。
+
 <img width="941" alt="スクリーンショット 2024-03-21 000406" src="https://github.com/iyoshi-rgb/sales_growth/assets/153269464/6885f041-50dd-436b-ab21-e07f460f220c">
 <br>
 <img width="943" alt="スクリーンショット 2024-03-21 000342" src="https://github.com/iyoshi-rgb/sales_growth/assets/153269464/6c18f201-88d0-4da5-957d-f6833ee7f9eb">
