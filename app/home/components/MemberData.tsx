@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import BarData from "./MemberData/BarData";
 
 interface Sales {
@@ -111,14 +111,15 @@ const MemberData = async ({ org }: Props) => {
     <>
       {preData?.length ? (
         <>
-          <BarData time={preYearMonth} data={preData} />
+          <BarData at={preYearMonth} data={preData} org={org} />
         </>
       ) : (
         <div></div>
       )}
+
       {thisData?.length ? (
         <>
-          <BarData time={thisYearMonth} data={thisData} />
+          <BarData at={thisYearMonth} data={thisData} org={org} />
         </>
       ) : (
         <div></div>

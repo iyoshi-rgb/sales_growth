@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
@@ -15,7 +14,6 @@ type AddUser = {
 const MemberAddModal = ({ org }: any) => {
   const router = useRouter();
   const supabase = createClient();
-  const [isModal, setIsModal] = useState<boolean>(false);
 
   const defaultValues = {
     memberName: "",
@@ -36,9 +34,13 @@ const MemberAddModal = ({ org }: any) => {
       .insert([{ person: value.memberName, org: org }])
       .select();
     if (data) {
+      alert(
+        `${value.memberName}を追加しました!\n画面が止まってしまった場合はリロードしてください💦`
+      );
       router.refresh();
     } else {
       console.log(error);
+      alert("追加に失敗しました😢");
     }
   };
 
@@ -54,7 +56,7 @@ const MemberAddModal = ({ org }: any) => {
             />
             <Button
               type="submit"
-              className="text-white bg-black w-auto mt-4"
+              className="text-white bg-cyan-700 hover:bg-cyan-900 w-auto mt-4"
               disabled={!isDirty || !isValid}
             >
               <CircleUser className="mr-3" />

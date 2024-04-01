@@ -17,7 +17,7 @@ export default function Login() {
     });
 
     if (error) {
-      return redirect("/login?message=ログインできませんでした");
+      return redirect("/?message=ログインできませんでした");
     }
 
     return redirect("/home");
@@ -40,10 +40,10 @@ export default function Login() {
     });
 
     if (error) {
-      return redirect("/login?message=登録できませんでした。");
+      return redirect("/?message=登録できませんでした。");
     }
 
-    return redirect("/login?message=メールを確認してください。");
+    return redirect("/?message=メールを確認してください。");
   };
 
   return (
@@ -78,14 +78,14 @@ export default function Login() {
         />
         <SubmitButton
           formAction={signIn}
-          className="bg-black rounded-md px-4 py-2 text-foreground text-white mb-2"
+          className="bg-teal-600 hover:bg-opacity-80 rounded-md px-4 py-2 text-foreground text-white mb-2"
           pendingText="Login..."
         >
           Login
         </SubmitButton>
         <SubmitButton
           formAction={signUp}
-          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+          className=" bg-cyan-900 hover:bg-opacity-80 rounded-md px-4 py-2 text-foreground text-white mb-2"
           pendingText="Create an Account..."
         >
           Create

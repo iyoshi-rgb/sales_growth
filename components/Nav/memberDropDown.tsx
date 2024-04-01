@@ -29,6 +29,9 @@ const MemberDropDown = ({ members, org }: any) => {
       .eq("list", person);
 
     if (!error) {
+      alert(
+        `${person}を削除しました!\n画面が止まってしまった場合はリロードしてください💦`
+      );
       router.refresh();
     } else {
       console.log(error);
@@ -65,7 +68,7 @@ const MemberDropDown = ({ members, org }: any) => {
                 <AlertDialog>
                   <AlertDialogTrigger asChild className="relative group">
                     <Button>
-                      <UserX className="text-red-400 mr-" />
+                      <UserX className="text-red-400 " />
                       <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100  text-red-400 px-2 text-xs">
                         削除
                       </span>
@@ -80,14 +83,11 @@ const MemberDropDown = ({ members, org }: any) => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction>
-                        <Button
-                          variant="outline"
-                          className="bg-black text-white"
-                          onClick={() => handleDelete(member.id, member.person)}
-                        >
-                          Delete
-                        </Button>
+                      <AlertDialogAction
+                        onClick={() => handleDelete(member.id, member.person)}
+                        className="bg-cyan-700 text-white hover:bg-cyan-900"
+                      >
+                        Delete
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

@@ -7,7 +7,7 @@ interface Props {
 
 const Header = ({ title }: Props) => {
   return (
-    <div className="mb-5">
+    <div>
       <div className="flex justify-between items-center">
         <p className="font-bold text-4xl py-4 pl-6">{title}</p>
         <div className="mr-5">
