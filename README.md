@@ -38,8 +38,7 @@ pass: test1111<br/>
 | List 画面 | 　各メンバーの List 画面 |
 | --------- | ------------------------ |
 
-![スクリーンショット 2024-04-01 162215](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/3b14cf83-f37e-4f8d-8f93-00286300e74c)
-| | ![スクリーンショット 2024-04-01 162231](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/6dafc452-a800-402e-b6b0-471fb889c2e0) |
+|![スクリーンショット 2024-04-01 162215](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/3b14cf83-f37e-4f8d-8f93-00286300e74c) | |![スクリーンショット 2024-04-01 162231](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/6dafc452-a800-402e-b6b0-471fb889c2e0)
 | 登録済みの複数の事業者の中から、請求書を作成したい事業者を選択する機能を実装しました。 | 請求書の作成機能・マスタデータの呼び出し機能・税率変更機能・税率別内訳の計算機能、合計金額の計算機能を実装しました。 |
 
 | メンバー一覧&追加画面  
