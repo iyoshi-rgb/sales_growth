@@ -93,10 +93,6 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const handleClick = () => {
-    console.log("aaa");
-  };
-
   return (
     <div className="mx-10">
       <div className="flex items-center w-auto py-4 ">

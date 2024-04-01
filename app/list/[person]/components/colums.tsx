@@ -27,7 +27,6 @@ export type Sales = {
   person: string;
   status: string;
   accept: boolean;
-  hot: boolean;
   org: string;
 };
 

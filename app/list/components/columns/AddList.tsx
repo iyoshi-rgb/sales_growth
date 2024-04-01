@@ -26,7 +26,6 @@ const AddList = ({ id, users }: Props) => {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { isDirty, isValid },
   } = useForm<List>({
     mode: "onChange",
