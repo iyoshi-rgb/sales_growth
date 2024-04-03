@@ -41,13 +41,13 @@ pass: test1111<br/>
 
 ## 使用技術
 
-| Category       | Technology Stack                                   |
-| -------------- | -------------------------------------------------- |
-| Frontend       | TypeScript, Next.js , shadcn/ui, MUI(棒グラフのみ) |
-| Backend        | Supabase                                           |
-| Infrastructure | Vercel                                             |
-| Database       | Supabase                                           |
-| Design         | Lucid                                              |
+| Category       | Technology Stack                                         |
+| -------------- | -------------------------------------------------------- |
+| Frontend       | TypeScript, Next.js , shadcn/ui, MUI(棒グラフ) ,tailwind |
+| Backend        | Supabase                                                 |
+| Infrastructure | Vercel                                                   |
+| Database       | Supabase                                                 |
+| Design         | Lucid                                                    |
 
 <br/>
 
