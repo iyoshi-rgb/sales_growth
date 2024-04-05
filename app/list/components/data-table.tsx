@@ -34,50 +34,35 @@ import AddModal from "./data-table/AddModal";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  user: string | undefined;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  user,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
   const [users, setUsers] = useState<any>();
-  const [auth, setAuth] = useState<string | null>();
 
   const supabase = createClient();
 
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+  const getMember = async () => {
+    const { data: members, error } = await supabase
+      .from("members")
+      .select("id,person")
+      .eq("org", user);
+    if (error) {
+      return error;
+    }
+    setUsers(members);
+  };
 
-      setAuth(user?.email);
-    };
-
-    getUser();
-  }, []);
-
-  useEffect(() => {
-    if (!auth) return;
-
-    const getMember = async () => {
-      let { data: members, error } = await supabase
-        .from("members")
-        .select("id,person")
-        .eq("org", auth);
-      if (error) {
-        return error;
-      }
-      setUsers(members);
-    };
-
-    getMember();
-  }, [auth]);
+  getMember();
 
   const table = useReactTable({
     data,
@@ -118,7 +103,7 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
 
-        <AddModal users={users} auth={auth} />
+        <AddModal users={users} auth={user} />
       </div>
       <div className="rounded-md border">
         <Table>

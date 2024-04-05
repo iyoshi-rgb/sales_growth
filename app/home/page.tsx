@@ -21,7 +21,7 @@ export default async function Home() {
       <div className="flex min-h-screen">
         <Nav org={user.email} />
         <div className="flex-1 flex flex-col ">
-          <Header title={"Home"} />
+          <Header title={"Data"} />
           <div className="flex flex-1">
             <div className="flex flex-1 justify-center items-center">
               <div className="w-full max-w-4xl flex flex-col items-center justify-center">

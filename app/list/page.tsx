@@ -44,7 +44,7 @@ export default async function DemoPage() {
         <div className="flex-1 ml-3">
           <Header title="List" />
           <div className="container mx-auto py-5 w-auto flex flex-col">
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={data} user={user?.email} />
           </div>
         </div>
       </div>

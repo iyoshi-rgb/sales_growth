@@ -23,11 +23,12 @@ const Nav = async ({ org }: any) => {
         </Link>
         <nav className="mt-4">
           <ul className="flex flex-col space-y-2">
+            <ListDropDown members={members} />
+
             <Link href="/home">
-              <li className="hover:text-white block px-6 py-2">Home</li>
+              <li className="hover:text-white block px-6 py-2">Data</li>
             </Link>
 
-            <ListDropDown members={members} />
             <MemberDropDown members={members} org={org} />
           </ul>
         </nav>

@@ -14,7 +14,7 @@ const ListDropDown = ({ members }: any) => {
         List
         {dropDown && (
           <div className="bg-gray-300 text-cyan-900 mt-1">
-            <Link href={"/list"}>
+            <Link href={"/sample"} prefetch>
               <div className="px-4 py-2 hover:text-black">All</div>
             </Link>
             {members.map((member: any) => (

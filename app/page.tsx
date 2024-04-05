@@ -11,7 +11,7 @@ export default async function Index() {
   } = await supabase.auth.getUser();
 
   if (user) {
-    return redirect("/home");
+    return redirect("/list");
   }
 
   return (

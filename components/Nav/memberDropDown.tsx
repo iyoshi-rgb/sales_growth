@@ -30,7 +30,7 @@ const MemberDropDown = ({ members, org }: any) => {
 
     if (!error) {
       alert(
-        `${person}を削除しました!\n画面が止まってしまった場合はリロードしてください💦`
+        `${person}を削除しました!\n画面が止まってしまった場合はリロードしてください`
       );
       router.refresh();
     } else {
