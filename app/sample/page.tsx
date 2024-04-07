@@ -2,6 +2,8 @@ import * as React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Data from "./components/Data";
+import Nav from "@/components/Nav";
+import Header from "@/components/Header";
 
 export default async function DataTable() {
   const supabase = createClient();
@@ -25,7 +27,16 @@ export default async function DataTable() {
 
   return (
     <>
-      <Data sales={sales} />
+      <div className="flex min-h-screen">
+        <Nav org={user?.email} />
+
+        <div className="flex-1 ml-3">
+          <Header title="List" />
+          <div className="container mx-auto py-5 w-auto flex flex-col">
+            <Data sales={sales} />
+          </div>
+        </div>
+      </div>
     </>
   );
 }
