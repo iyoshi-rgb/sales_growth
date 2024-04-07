@@ -219,7 +219,7 @@ export default function Data({ sales }: Props) {
             },
           },
         }}
-        pageSizeOptions={[10]}
+        pageSizeOptions={[5]}
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
