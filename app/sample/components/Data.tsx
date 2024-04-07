@@ -35,7 +35,6 @@ const columns: GridColDef[] = [
 
 const Data: React.FC<Props> = ({ sales }) => {
   const DB = async (newRow: GridRowModel) => {
-    // ここで更新処理を実装（この例ではダミーの実装を示しています）
     console.log("Update row:", newRow);
     return newRow;
   };
