@@ -51,10 +51,13 @@ function EditToolbar(props: EditToolbarProps) {
   const handleClick = () => {
     //要変更
     const id = 4;
-    setRows((oldRows) => [...oldRows, { id, name: "", age: "", isNew: true }]);
+    setRows((oldRows) => [
+      ...oldRows,
+      { id, client: "", phone: "", person: "", status: "", isNew: true },
+    ]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: "client" },
     }));
   };
 
@@ -73,15 +76,6 @@ export default function Data({ sales }: Props) {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
-
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-    params,
-    event
-  ) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
-    }
-  };
 
   const handleEditClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
@@ -115,6 +109,12 @@ export default function Data({ sales }: Props) {
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
+  };
+
+  const handleCellClick: GridEventListener<"rowEditStop"> = (params, event) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
   };
 
   const columns: GridColDef[] = [
@@ -212,17 +212,9 @@ export default function Data({ sales }: Props) {
         rows={rows}
         columns={columns}
         editMode="row"
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
+        onCellClick={handleCellClick}
         processRowUpdate={processRowUpdate}
         slots={{
           toolbar: EditToolbar as GridSlots["toolbar"],
