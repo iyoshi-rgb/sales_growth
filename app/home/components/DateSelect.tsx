@@ -46,8 +46,6 @@ const DateSelect = ({ data }: Props) => {
 
   const yearsArray: number[] = Array.from(uniqueYears);
 
-  console.log(yearsArray);
-
   useEffect(() => {
     if (selectedMonth === null) return;
 
