@@ -1,63 +1,61 @@
 import React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { PieChart } from "@mui/x-charts/PieChart";
 
-{
-  /*const DemoPaper = styled(Paper)(({ theme }) => ({
-  width: 250,
-  height: 200,
-  padding: theme.spacing(2),
-  ...theme.typography.body2,
-}));*/
-}
+const DrawerContent = ({ year, month, data }: any) => {
+  const people = Object.keys(data);
+  const appointment = people.map((person) => data[person]["アポ取得"]);
+  const notAppointment = people.map(
+    (person) => data[person]["total"] - data[person]["アポ取得"]
+  );
+  const totalData = people.map((person) => data[person]["total"]);
 
-const DrawerContent = ({ month, data }: any) => {
-  const dataArray = Object.entries(data).map(([person, values]: any) => ({
-    person,
-    アポ取得: values["アポ取得"],
+  const pieData = Object.keys(data).map((person, index) => ({
+    id: index,
+    value: data[person]["アポ取得"],
+    label: person,
   }));
 
-  console.log(dataArray);
+  const hasAppointments = pieData.some((item) => item.value > 0);
 
-  const isDataEmpty = dataArray.length === 0 || Object.keys(data).length === 0;
+  const isDataEmpty = !people.length;
 
   return (
     <>
-      <span className="text-2xl">{month}月</span>
+      <span className="text-2xl">
+        {year} {month}月
+      </span>
 
-      <div className="flex flex-row items-center">
-        {/*<DemoPaper variant="elevation">
-          担当者: アポイントメント数 / 荷電数 , 取得率(%)
-          {Object.entries(data).map(([person, counts]: any) => {
-            const rate =
-              counts.total > 0
-                ? ((counts.アポ取得 / counts.total) * 100).toFixed(2)
-                : 0;
-            return (
-              <div key={person}>
-                {person}: {counts.アポ取得}/{counts.total}, {rate}%
-              </div>
-            );
-          })}
-        </DemoPaper>*/}
+      <div className="flex flex-row items-center justify-center space-x-4 w-full">
         {isDataEmpty ? (
-          <div className="text-center text-2xl">No results</div>
+          <div className="text-center text-5xl font-bold w-full py-10 my-10">
+            No Data
+          </div>
         ) : (
-          <BarChart
-            xAxis={[
-              {
-                id: "barCategories",
-                data: dataArray.map((item) => item.person),
-                scaleType: "band",
-              },
-            ]}
-            series={[
-              {
-                data: dataArray.map((item) => item.アポ取得),
-              },
-            ]}
-            width={500}
-            height={300}
-          />
+          <>
+            {hasAppointments && (
+              <PieChart
+                series={[
+                  {
+                    data: pieData,
+                  },
+                ]}
+                width={400}
+                height={200}
+              />
+            )}
+
+            <BarChart
+              xAxis={[{ scaleType: "band", data: people }]}
+              series={[
+                { data: appointment, label: "アポ取得" },
+                { data: notAppointment, label: "不在/未荷電/NG" },
+                { data: totalData, label: "荷電数" },
+              ]}
+              width={500}
+              height={300}
+            />
+          </>
         )}
       </div>
     </>

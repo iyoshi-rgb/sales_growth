@@ -23,8 +23,13 @@ interface FilteredData {
   };
 }
 
-const DateSelect = ({ data }: any) => {
+interface Props {
+  data: DataItem[];
+}
+
+const DateSelect = ({ data }: Props) => {
   const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
 
   const [year, setYear] = useState(currentYear);
   const [selectedMonth, setSelectedMonth] = useState<number>();
@@ -32,19 +37,28 @@ const DateSelect = ({ data }: any) => {
   const [countByMonth, setCountByMonth] = useState<Record<number, number>>({});
   const [filteredData, setFilteredData] = useState({});
 
+  const uniqueYears = new Set<number>();
+
+  data.forEach((item) => {
+    const year = new Date(item.created_at).getFullYear();
+    uniqueYears.add(year);
+  });
+
+  const yearsArray: number[] = Array.from(uniqueYears);
+
+  console.log(yearsArray);
+
   useEffect(() => {
     if (selectedMonth === null) return;
 
     const result: FilteredData = {};
-
-    console.log(data);
 
     data.forEach((item: DataItem) => {
       const dataYear = new Date(item.created_at).getFullYear();
       const month = new Date(item.created_at).getMonth() + 1;
       if (month === selectedMonth && dataYear === year) {
         const person = item.person;
-        if (!person) return; // personがnullまたはundefinedの場合はスキップ
+        if (!person) return;
 
         if (!result[person]) {
           result[person] = { アポ取得: 0, total: 0 };
@@ -57,10 +71,15 @@ const DateSelect = ({ data }: any) => {
       }
     });
 
-    setFilteredData(result);
-  }, [selectedMonth, year]);
+    const sortedKeys = Object.keys(result).sort();
+    const sortedData: FilteredData = {};
 
-  console.log(filteredData);
+    sortedKeys.forEach((key) => {
+      sortedData[key] = result[key];
+    });
+
+    setFilteredData(sortedData);
+  }, [selectedMonth, year]);
 
   useEffect(() => {
     const monthCounts = Array.from({ length: 12 }, (_, i) => [i + 1, 0]).reduce(
@@ -100,6 +119,13 @@ const DateSelect = ({ data }: any) => {
 
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
+  const hasDataForMonth = (year: number, month: number): boolean => {
+    return data.some((item) => {
+      const date = new Date(item.created_at);
+      return date.getFullYear() === year && date.getMonth() + 1 === month;
+    });
+  };
+
   return (
     <div className="flex items-start ">
       <div className="my-4">
@@ -108,25 +134,32 @@ const DateSelect = ({ data }: any) => {
           aria-label="Vertical button group"
           variant="text"
         >
-          {Array.from({ length: 3 }, (_, i) => currentYear - i).map(
-            (yearOption) => (
-              <Button
-                key={yearOption}
-                value={yearOption}
-                onClick={() => handleYearChange(yearOption)}
-              >
-                {yearOption}
-              </Button>
-            )
-          )}
+          {yearsArray.map((value) => (
+            <Button
+              key={value}
+              value={value}
+              onClick={() => handleYearChange(value)}
+            >
+              {value}
+            </Button>
+          ))}
         </ButtonGroup>
       </div>
       <div className="flex flex-col items-center pl-10 ml-10">
+        <span className="text-xl font-bold pb-5">{year}年</span>
         <div className="grid grid-cols-3 gap-4">
           {months.map((month, index) => (
             <Card
               key={index}
-              className="cursor-pointer w-60"
+              className={`cursor-pointer w-60 ${
+                year === currentYear && month === currentMonth
+                  ? "border-2 border-blue-500 "
+                  : ""
+              } ${
+                hasDataForMonth(year, month)
+                  ? "text-blue-500"
+                  : "cursor-not-allowed"
+              }`}
               onClick={() => handleMonthClick(month)}
             >
               <CardActionArea>
@@ -150,7 +183,11 @@ const DateSelect = ({ data }: any) => {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
           >
-            <DrawerContent month={selectedMonth} data={filteredData} />
+            <DrawerContent
+              year={year}
+              month={selectedMonth}
+              data={filteredData}
+            />
           </div>
         </Drawer>
       </div>
