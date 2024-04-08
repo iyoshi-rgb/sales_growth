@@ -24,7 +24,7 @@ interface FilteredData {
 }
 
 interface Props {
-  data: DataItem[];
+  data: DataItem[] | null;
 }
 
 const DateSelect = ({ data }: Props) => {
@@ -39,7 +39,7 @@ const DateSelect = ({ data }: Props) => {
 
   const uniqueYears = new Set<number>();
 
-  data.forEach((item) => {
+  data?.forEach((item) => {
     const year = new Date(item.created_at).getFullYear();
     uniqueYears.add(year);
   });
@@ -53,7 +53,7 @@ const DateSelect = ({ data }: Props) => {
 
     const result: FilteredData = {};
 
-    data.forEach((item: DataItem) => {
+    data?.forEach((item: DataItem) => {
       const dataYear = new Date(item.created_at).getFullYear();
       const month = new Date(item.created_at).getMonth() + 1;
       if (month === selectedMonth && dataYear === year) {
@@ -87,14 +87,17 @@ const DateSelect = ({ data }: Props) => {
       {}
     );
     const newCountByMonth: Record<number, number> = monthCounts;
-    for (const item of data) {
-      const itemYear = new Date(item.created_at).getFullYear();
-      const itemStatus = item.status;
-      if (itemYear === year && itemStatus === "アポ取得") {
-        const month = new Date(item.created_at).getMonth() + 1;
-        newCountByMonth[month] = (newCountByMonth[month] || 0) + 1;
+    if (data) {
+      for (const item of data) {
+        const itemYear = new Date(item.created_at).getFullYear();
+        const itemStatus = item.status;
+        if (itemYear === year && itemStatus === "アポ取得") {
+          const month = new Date(item.created_at).getMonth() + 1;
+          newCountByMonth[month] = (newCountByMonth[month] || 0) + 1;
+        }
       }
     }
+
     setCountByMonth(newCountByMonth);
   }, [data, year]);
 
@@ -119,21 +122,21 @@ const DateSelect = ({ data }: Props) => {
 
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  const hasDataForMonth = (year: number, month: number): boolean => {
-    return data.some((item) => {
+  const hasDataForMonth = (
+    year: number,
+    month: number
+  ): boolean | undefined => {
+    return data?.some((item) => {
       const date = new Date(item.created_at);
       return date.getFullYear() === year && date.getMonth() + 1 === month;
     });
   };
 
   return (
-    <div className="flex items-start ">
-      <div className="my-4">
-        <ButtonGroup
-          orientation="vertical"
-          aria-label="Vertical button group"
-          variant="text"
-        >
+    <div className="flex flex-col items-center pl-10 ml-10">
+      {/* ButtonGroup と年を表示する span を含む div */}
+      <div className="flex justify-between w-full py-5 relative">
+        <ButtonGroup aria-label="Basic button group" variant="text">
           {yearsArray.map((value) => (
             <Button
               key={value}
@@ -144,53 +147,52 @@ const DateSelect = ({ data }: Props) => {
             </Button>
           ))}
         </ButtonGroup>
+        <span className="text-xl font-bold absolute left-1/2 transform -translate-x-1/2">
+          {year}年
+        </span>
+        {/* ダミー要素を削除 */}
       </div>
-      <div className="flex flex-col items-center pl-10 ml-10">
-        <span className="text-xl font-bold pb-5">{year}年</span>
-        <div className="grid grid-cols-3 gap-4">
-          {months.map((month, index) => (
-            <Card
-              key={index}
-              className={`cursor-pointer w-60 ${
-                year === currentYear && month === currentMonth
-                  ? "border-2 border-blue-500 "
-                  : ""
-              } ${
-                hasDataForMonth(year, month)
-                  ? "text-blue-500"
-                  : "cursor-not-allowed"
-              }`}
-              onClick={() => handleMonthClick(month)}
-            >
-              <CardActionArea>
-                <Typography className="p-2 font-bold">{month}月</Typography>
-                <Typography className="text-3xl text-center pb-3">
-                  {countByMonth[month]}件
-                </Typography>
-              </CardActionArea>
-            </Card>
-          ))}
-        </div>
 
-        <Drawer
-          anchor="bottom"
-          open={isDrawerOpen}
-          onClose={toggleDrawer(false)}
-        >
-          <div
-            className="p-4"
-            role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
+      {/* カードを表示するグリッド */}
+      <div className="grid grid-cols-3 gap-4 w-full">
+        {months.map((month, index) => (
+          <Card
+            key={index}
+            className={`cursor-pointer w-60 ${
+              year === currentYear && month === currentMonth
+                ? "border-2 border-blue-500"
+                : ""
+            } ${
+              hasDataForMonth(year, month)
+                ? "text-blue-500"
+                : "cursor-not-allowed"
+            }`}
+            onClick={() => handleMonthClick(month)}
           >
-            <DrawerContent
-              year={year}
-              month={selectedMonth}
-              data={filteredData}
-            />
-          </div>
-        </Drawer>
+            <CardActionArea>
+              <Typography className="p-2 font-bold">{month}月</Typography>
+              <Typography className="text-3xl text-center pb-3">
+                {countByMonth[month]}件
+              </Typography>
+            </CardActionArea>
+          </Card>
+        ))}
       </div>
+
+      <Drawer anchor="bottom" open={isDrawerOpen} onClose={toggleDrawer(false)}>
+        <div
+          className="p-4"
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
+          <DrawerContent
+            year={year}
+            month={selectedMonth}
+            data={filteredData}
+          />
+        </div>
+      </Drawer>
     </div>
   );
 };

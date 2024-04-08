@@ -24,9 +24,10 @@ export default async function Home() {
     <>
       <div className="flex min-h-screen">
         <Nav org={user.email} />
-        <div className="flex-1 ml-3 ">
-          <Header title={"Data"} />
-          <div className="container mx-auto py-5 w-auto flex flex-col">
+        <div className="flex-1">
+          <Header title="Data" />
+
+          <div className="container  py-5 w-auto flex flex-col">
             <DateSelect data={sales} />
           </div>
         </div>
