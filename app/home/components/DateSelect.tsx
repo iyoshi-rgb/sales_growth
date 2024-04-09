@@ -141,13 +141,13 @@ const DateSelect = ({ data }: Props) => {
               value={value}
               onClick={() => handleYearChange(value)}
             >
-              {value}
+              <span className={`${year === value ? "" : "text-gray-500"}`}>
+                {value}
+              </span>
             </Button>
           ))}
         </ButtonGroup>
-        <span className="text-xl font-bold absolute left-1/2 transform -translate-x-1/2">
-          {year}年
-        </span>
+
         {/* ダミー要素を削除 */}
       </div>
 
