@@ -20,12 +20,18 @@ export default async function Home() {
     .select("created_at,person,status")
     .eq("email", user.email);
 
+  const section = [
+    { title: "List", url: "list" },
+    { title: "Data", url: "home" },
+    { title: "Note", url: "workspace" },
+  ];
+
   return (
     <>
       <div className="flex min-h-screen">
-        <Nav org={user.email} />
+        {/*<Nav org={user.email} />*/}
         <div className="flex-1">
-          <Header title="Data" />
+          <Header sections={section} title="Data" />
 
           <div className="container  py-5 w-auto flex flex-col">
             <DateSelect data={sales} />
