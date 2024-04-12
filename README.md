@@ -9,8 +9,6 @@ https://sales-growth.vercel.app/
 mail: test@mail.com<br/>
 pass: test1111<br/>
 でぜひ中身をのぞいてください。
-
-＊favicon がなぜか変更されない（お助けを）
 <br />
 
 ## サービスへの想い(作成の背景)
