@@ -17,7 +17,7 @@ export default function Login() {
     });
 
     if (error) {
-      return redirect("/?message=ログインできませんでした");
+      return redirect("/?message=ログインできません");
     }
 
     return redirect("/list");
