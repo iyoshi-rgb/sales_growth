@@ -20,7 +20,7 @@ export default function Login() {
       return redirect("/?message=ログインできません");
     }
 
-    return redirect("/workspace");
+    return redirect("/list");
   };
 
   const signUp = async (formData: FormData) => {
