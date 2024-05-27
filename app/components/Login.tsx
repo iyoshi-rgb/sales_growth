@@ -40,7 +40,7 @@ export default function Login() {
     });
 
     if (error) {
-      return redirect("/?message=登録できませんでした。");
+      return redirect("/?message=登録できません。");
     }
 
     return redirect("/?message=メールを確認してください。");
