@@ -1,7 +1,6 @@
 import "./globals.css";
 import { Noto_Sans_JP } from "next/font/google";
 import clsx from "clsx";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

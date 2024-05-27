@@ -1,11 +1,11 @@
-import * as React from "react";
+import { Sales, columns } from "./components/columns";
+import { DataTable } from "./components/data-table";
 import { createClient } from "@/utils/supabase/server";
+import Nav from "../../components/Nav";
 import { redirect } from "next/navigation";
-import Data from "./components/Data";
-import Nav from "@/components/Nav";
 import Header from "@/components/Header";
 
-export default async function DataTable() {
+async function getData(): Promise<Sales[]> {
   const supabase = createClient();
 
   const {
@@ -25,28 +25,26 @@ export default async function DataTable() {
     console.log(error);
   }
 
-  const { data: members, err }: any = await supabase
-    .from("members")
-    .select("person")
-    .eq("org", user.email);
+  return sales;
+}
 
-  const member = members.map((item: any) => item.person);
+export default async function DemoPage() {
+  const data = await getData();
+  const supabase = createClient();
 
-  const section = [
-    { title: "List", url: "list" },
-    { title: "Data", url: "home" },
-    { title: "Note", url: "workspace" },
-  ];
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <>
       <div className="flex min-h-screen">
-        {/*<Nav org={user?.email} />*/}
+        <Nav org={user?.email} />
 
         <div className="flex-1 ml-3">
-          <Header sections={section} title="List" />
+          <Header title="List" />
           <div className="container mx-auto py-5 w-auto flex flex-col">
-            <Data sales={sales} members={member} org={user.email} />
+            <DataTable columns={columns} data={data} user={user?.email} />
           </div>
         </div>
       </div>

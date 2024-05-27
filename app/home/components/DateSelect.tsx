@@ -46,6 +46,8 @@ const DateSelect = ({ data }: Props) => {
 
   const yearsArray: number[] = Array.from(uniqueYears);
 
+  console.log(yearsArray);
+
   useEffect(() => {
     if (selectedMonth === null) return;
 
@@ -141,13 +143,13 @@ const DateSelect = ({ data }: Props) => {
               value={value}
               onClick={() => handleYearChange(value)}
             >
-              <span className={`${year === value ? "" : "text-gray-500"}`}>
-                {value}
-              </span>
+              {value}
             </Button>
           ))}
         </ButtonGroup>
-
+        <span className="text-xl font-bold absolute left-1/2 transform -translate-x-1/2">
+          {year}年
+        </span>
         {/* ダミー要素を削除 */}
       </div>
 
