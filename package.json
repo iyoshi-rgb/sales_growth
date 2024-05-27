@@ -27,6 +27,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "^2.42.0",
     "@tanstack/react-table": "^8.13.2",
+    "@vercel/speed-insights": "^1.0.11",
     "autoprefixer": "10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
